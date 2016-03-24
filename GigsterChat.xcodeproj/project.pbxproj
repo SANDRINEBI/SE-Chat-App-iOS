@@ -1,0 +1,659 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		406A93A41CA2E48000EACED8 /* API.m in Sources */ = {isa = PBXBuildFile; fileRef = 406A93A31CA2E48000EACED8 /* API.m */; };
+		40828EAF1C99A68200510C7D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40828EAE1C99A68200510C7D /* LoginViewController.m */; };
+		40828EB21C99A69000510C7D /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40828EB11C99A69000510C7D /* ChatViewController.m */; };
+		40828EB51C99AB2300510C7D /* RootReplaceSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 40828EB41C99AB2300510C7D /* RootReplaceSegue.m */; };
+		40828EB81C99AE4500510C7D /* ChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 40828EB71C99AE4500510C7D /* ChatListCell.m */; };
+		40828EC11C99B9E900510C7D /* billboard-loginscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 40828EBA1C99B9E900510C7D /* billboard-loginscreen@2x.png */; };
+		40828EC21C99B9E900510C7D /* billboard-notificationscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 40828EBB1C99B9E900510C7D /* billboard-notificationscreen@2x.png */; };
+		40828EC31C99B9E900510C7D /* button-gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 40828EBC1C99B9E900510C7D /* button-gear.png */; };
+		40828EC41C99B9E900510C7D /* button-gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 40828EBD1C99B9E900510C7D /* button-gear@2x.png */; };
+		40828EC51C99B9E900510C7D /* icon-checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 40828EBE1C99B9E900510C7D /* icon-checkmark@2x.png */; };
+		40828EC61C99B9E900510C7D /* logo-justchat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 40828EBF1C99B9E900510C7D /* logo-justchat@2x.png */; };
+		40828EC71C99B9E900510C7D /* logo-titlebar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 40828EC01C99B9E900510C7D /* logo-titlebar@2x.png */; };
+		40828EC91C99E0DE00510C7D /* arrow-right-chevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 40828EC81C99E0DE00510C7D /* arrow-right-chevron@2x.png */; };
+		4086147B1C974FBD00E73866 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4086147A1C974FBD00E73866 /* main.m */; };
+		4086147E1C974FBD00E73866 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4086147D1C974FBD00E73866 /* AppDelegate.m */; };
+		408614811C974FBD00E73866 /* ChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 408614801C974FBD00E73866 /* ChatListViewController.m */; };
+		408614841C974FBD00E73866 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 408614821C974FBD00E73866 /* Main.storyboard */; };
+		408614861C974FBD00E73866 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 408614851C974FBD00E73866 /* Assets.xcassets */; };
+		408614891C974FBD00E73866 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 408614871C974FBD00E73866 /* LaunchScreen.storyboard */; };
+		408614941C974FBD00E73866 /* GigsterChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 408614931C974FBD00E73866 /* GigsterChatTests.m */; };
+		4086149F1C974FBD00E73866 /* GigsterChatUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4086149E1C974FBD00E73866 /* GigsterChatUITests.m */; };
+		49856FF424C53C694694BF68 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B44E7F74CDD0A891854FE8 /* libPods.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		408614901C974FBD00E73866 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4086146E1C974FBD00E73866 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 408614751C974FBD00E73866;
+			remoteInfo = GigsterChat;
+		};
+		4086149B1C974FBD00E73866 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4086146E1C974FBD00E73866 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 408614751C974FBD00E73866;
+			remoteInfo = GigsterChat;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1F257E34DF7F95B4248EE84E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		406A93A21CA2E48000EACED8 /* API.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = API.h; sourceTree = "<group>"; };
+		406A93A31CA2E48000EACED8 /* API.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = API.m; sourceTree = "<group>"; };
+		40828EAD1C99A68200510C7D /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		40828EAE1C99A68200510C7D /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		40828EB01C99A69000510C7D /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		40828EB11C99A69000510C7D /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		40828EB31C99AB2300510C7D /* RootReplaceSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootReplaceSegue.h; sourceTree = "<group>"; };
+		40828EB41C99AB2300510C7D /* RootReplaceSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootReplaceSegue.m; sourceTree = "<group>"; };
+		40828EB61C99AE4500510C7D /* ChatListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatListCell.h; sourceTree = "<group>"; };
+		40828EB71C99AE4500510C7D /* ChatListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatListCell.m; sourceTree = "<group>"; };
+		40828EBA1C99B9E900510C7D /* billboard-loginscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "billboard-loginscreen@2x.png"; path = "Images/billboard-loginscreen@2x.png"; sourceTree = SOURCE_ROOT; };
+		40828EBB1C99B9E900510C7D /* billboard-notificationscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "billboard-notificationscreen@2x.png"; path = "Images/billboard-notificationscreen@2x.png"; sourceTree = SOURCE_ROOT; };
+		40828EBC1C99B9E900510C7D /* button-gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-gear.png"; path = "Images/button-gear.png"; sourceTree = SOURCE_ROOT; };
+		40828EBD1C99B9E900510C7D /* button-gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-gear@2x.png"; path = "Images/button-gear@2x.png"; sourceTree = SOURCE_ROOT; };
+		40828EBE1C99B9E900510C7D /* icon-checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-checkmark@2x.png"; path = "Images/icon-checkmark@2x.png"; sourceTree = SOURCE_ROOT; };
+		40828EBF1C99B9E900510C7D /* logo-justchat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo-justchat@2x.png"; path = "Images/logo-justchat@2x.png"; sourceTree = SOURCE_ROOT; };
+		40828EC01C99B9E900510C7D /* logo-titlebar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo-titlebar@2x.png"; path = "Images/logo-titlebar@2x.png"; sourceTree = SOURCE_ROOT; };
+		40828EC81C99E0DE00510C7D /* arrow-right-chevron@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "arrow-right-chevron@2x.png"; path = "Images/arrow-right-chevron@2x.png"; sourceTree = SOURCE_ROOT; };
+		408614761C974FBD00E73866 /* GigsterChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GigsterChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4086147A1C974FBD00E73866 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		4086147C1C974FBD00E73866 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		4086147D1C974FBD00E73866 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		4086147F1C974FBD00E73866 /* ChatListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatListViewController.h; sourceTree = "<group>"; };
+		408614801C974FBD00E73866 /* ChatListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatListViewController.m; sourceTree = "<group>"; };
+		408614831C974FBD00E73866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		408614851C974FBD00E73866 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		408614881C974FBD00E73866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		4086148A1C974FBD00E73866 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4086148F1C974FBD00E73866 /* GigsterChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GigsterChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		408614931C974FBD00E73866 /* GigsterChatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GigsterChatTests.m; sourceTree = "<group>"; };
+		408614951C974FBD00E73866 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4086149A1C974FBD00E73866 /* GigsterChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GigsterChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4086149E1C974FBD00E73866 /* GigsterChatUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GigsterChatUITests.m; sourceTree = "<group>"; };
+		408614A01C974FBE00E73866 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		69B44E7F74CDD0A891854FE8 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		98EAF5ABF05CD8D628325253 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		408614731C974FBD00E73866 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49856FF424C53C694694BF68 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4086148C1C974FBD00E73866 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		408614971C974FBD00E73866 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		25C1AB165D70ABD3D757DA82 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				98EAF5ABF05CD8D628325253 /* Pods.debug.xcconfig */,
+				1F257E34DF7F95B4248EE84E /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		40828EB91C99B9D900510C7D /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				40828EC81C99E0DE00510C7D /* arrow-right-chevron@2x.png */,
+				40828EBA1C99B9E900510C7D /* billboard-loginscreen@2x.png */,
+				40828EBB1C99B9E900510C7D /* billboard-notificationscreen@2x.png */,
+				40828EBC1C99B9E900510C7D /* button-gear.png */,
+				40828EBD1C99B9E900510C7D /* button-gear@2x.png */,
+				40828EBE1C99B9E900510C7D /* icon-checkmark@2x.png */,
+				40828EBF1C99B9E900510C7D /* logo-justchat@2x.png */,
+				40828EC01C99B9E900510C7D /* logo-titlebar@2x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		4086146D1C974FBD00E73866 = {
+			isa = PBXGroup;
+			children = (
+				408614781C974FBD00E73866 /* GigsterChat */,
+				408614921C974FBD00E73866 /* GigsterChatTests */,
+				4086149D1C974FBD00E73866 /* GigsterChatUITests */,
+				408614771C974FBD00E73866 /* Products */,
+				25C1AB165D70ABD3D757DA82 /* Pods */,
+				6BE86FA056042D30C6800934 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		408614771C974FBD00E73866 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				408614761C974FBD00E73866 /* GigsterChat.app */,
+				4086148F1C974FBD00E73866 /* GigsterChatTests.xctest */,
+				4086149A1C974FBD00E73866 /* GigsterChatUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		408614781C974FBD00E73866 /* GigsterChat */ = {
+			isa = PBXGroup;
+			children = (
+				40828EB91C99B9D900510C7D /* Images */,
+				4086147C1C974FBD00E73866 /* AppDelegate.h */,
+				4086147D1C974FBD00E73866 /* AppDelegate.m */,
+				40828EAD1C99A68200510C7D /* LoginViewController.h */,
+				40828EAE1C99A68200510C7D /* LoginViewController.m */,
+				4086147F1C974FBD00E73866 /* ChatListViewController.h */,
+				408614801C974FBD00E73866 /* ChatListViewController.m */,
+				40828EB01C99A69000510C7D /* ChatViewController.h */,
+				40828EB11C99A69000510C7D /* ChatViewController.m */,
+				408614821C974FBD00E73866 /* Main.storyboard */,
+				408614851C974FBD00E73866 /* Assets.xcassets */,
+				408614871C974FBD00E73866 /* LaunchScreen.storyboard */,
+				4086148A1C974FBD00E73866 /* Info.plist */,
+				408614791C974FBD00E73866 /* Supporting Files */,
+				40828EB31C99AB2300510C7D /* RootReplaceSegue.h */,
+				40828EB41C99AB2300510C7D /* RootReplaceSegue.m */,
+				40828EB61C99AE4500510C7D /* ChatListCell.h */,
+				40828EB71C99AE4500510C7D /* ChatListCell.m */,
+				406A93A21CA2E48000EACED8 /* API.h */,
+				406A93A31CA2E48000EACED8 /* API.m */,
+			);
+			path = GigsterChat;
+			sourceTree = "<group>";
+		};
+		408614791C974FBD00E73866 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4086147A1C974FBD00E73866 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		408614921C974FBD00E73866 /* GigsterChatTests */ = {
+			isa = PBXGroup;
+			children = (
+				408614931C974FBD00E73866 /* GigsterChatTests.m */,
+				408614951C974FBD00E73866 /* Info.plist */,
+			);
+			path = GigsterChatTests;
+			sourceTree = "<group>";
+		};
+		4086149D1C974FBD00E73866 /* GigsterChatUITests */ = {
+			isa = PBXGroup;
+			children = (
+				4086149E1C974FBD00E73866 /* GigsterChatUITests.m */,
+				408614A01C974FBE00E73866 /* Info.plist */,
+			);
+			path = GigsterChatUITests;
+			sourceTree = "<group>";
+		};
+		6BE86FA056042D30C6800934 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				69B44E7F74CDD0A891854FE8 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		408614751C974FBD00E73866 /* GigsterChat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 408614A31C974FBE00E73866 /* Build configuration list for PBXNativeTarget "GigsterChat" */;
+			buildPhases = (
+				4D28B4EB10CE15ADF7E2745F /* Check Pods Manifest.lock */,
+				408614721C974FBD00E73866 /* Sources */,
+				408614731C974FBD00E73866 /* Frameworks */,
+				408614741C974FBD00E73866 /* Resources */,
+				A959FFC4B3465DCDEB39C03B /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GigsterChat;
+			productName = GigsterChat;
+			productReference = 408614761C974FBD00E73866 /* GigsterChat.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4086148E1C974FBD00E73866 /* GigsterChatTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 408614A61C974FBE00E73866 /* Build configuration list for PBXNativeTarget "GigsterChatTests" */;
+			buildPhases = (
+				4086148B1C974FBD00E73866 /* Sources */,
+				4086148C1C974FBD00E73866 /* Frameworks */,
+				4086148D1C974FBD00E73866 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				408614911C974FBD00E73866 /* PBXTargetDependency */,
+			);
+			name = GigsterChatTests;
+			productName = GigsterChatTests;
+			productReference = 4086148F1C974FBD00E73866 /* GigsterChatTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		408614991C974FBD00E73866 /* GigsterChatUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 408614A91C974FBE00E73866 /* Build configuration list for PBXNativeTarget "GigsterChatUITests" */;
+			buildPhases = (
+				408614961C974FBD00E73866 /* Sources */,
+				408614971C974FBD00E73866 /* Frameworks */,
+				408614981C974FBD00E73866 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4086149C1C974FBD00E73866 /* PBXTargetDependency */,
+			);
+			name = GigsterChatUITests;
+			productName = GigsterChatUITests;
+			productReference = 4086149A1C974FBD00E73866 /* GigsterChatUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4086146E1C974FBD00E73866 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Hoan Ton-That";
+				TargetAttributes = {
+					408614751C974FBD00E73866 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+					4086148E1C974FBD00E73866 = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = 408614751C974FBD00E73866;
+					};
+					408614991C974FBD00E73866 = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = 408614751C974FBD00E73866;
+					};
+				};
+			};
+			buildConfigurationList = 408614711C974FBD00E73866 /* Build configuration list for PBXProject "GigsterChat" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4086146D1C974FBD00E73866;
+			productRefGroup = 408614771C974FBD00E73866 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				408614751C974FBD00E73866 /* GigsterChat */,
+				4086148E1C974FBD00E73866 /* GigsterChatTests */,
+				408614991C974FBD00E73866 /* GigsterChatUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		408614741C974FBD00E73866 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				408614891C974FBD00E73866 /* LaunchScreen.storyboard in Resources */,
+				40828EC51C99B9E900510C7D /* icon-checkmark@2x.png in Resources */,
+				40828EC21C99B9E900510C7D /* billboard-notificationscreen@2x.png in Resources */,
+				40828EC31C99B9E900510C7D /* button-gear.png in Resources */,
+				408614861C974FBD00E73866 /* Assets.xcassets in Resources */,
+				40828EC91C99E0DE00510C7D /* arrow-right-chevron@2x.png in Resources */,
+				40828EC11C99B9E900510C7D /* billboard-loginscreen@2x.png in Resources */,
+				40828EC71C99B9E900510C7D /* logo-titlebar@2x.png in Resources */,
+				40828EC61C99B9E900510C7D /* logo-justchat@2x.png in Resources */,
+				408614841C974FBD00E73866 /* Main.storyboard in Resources */,
+				40828EC41C99B9E900510C7D /* button-gear@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4086148D1C974FBD00E73866 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		408614981C974FBD00E73866 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4D28B4EB10CE15ADF7E2745F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A959FFC4B3465DCDEB39C03B /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		408614721C974FBD00E73866 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40828EAF1C99A68200510C7D /* LoginViewController.m in Sources */,
+				408614811C974FBD00E73866 /* ChatListViewController.m in Sources */,
+				406A93A41CA2E48000EACED8 /* API.m in Sources */,
+				40828EB51C99AB2300510C7D /* RootReplaceSegue.m in Sources */,
+				40828EB21C99A69000510C7D /* ChatViewController.m in Sources */,
+				4086147E1C974FBD00E73866 /* AppDelegate.m in Sources */,
+				4086147B1C974FBD00E73866 /* main.m in Sources */,
+				40828EB81C99AE4500510C7D /* ChatListCell.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4086148B1C974FBD00E73866 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				408614941C974FBD00E73866 /* GigsterChatTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		408614961C974FBD00E73866 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4086149F1C974FBD00E73866 /* GigsterChatUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		408614911C974FBD00E73866 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 408614751C974FBD00E73866 /* GigsterChat */;
+			targetProxy = 408614901C974FBD00E73866 /* PBXContainerItemProxy */;
+		};
+		4086149C1C974FBD00E73866 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 408614751C974FBD00E73866 /* GigsterChat */;
+			targetProxy = 4086149B1C974FBD00E73866 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		408614821C974FBD00E73866 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				408614831C974FBD00E73866 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		408614871C974FBD00E73866 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				408614881C974FBD00E73866 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		408614A11C974FBE00E73866 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		408614A21C974FBE00E73866 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		408614A41C974FBE00E73866 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 98EAF5ABF05CD8D628325253 /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = GigsterChat/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoantonthat.GigsterChat;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		408614A51C974FBE00E73866 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1F257E34DF7F95B4248EE84E /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = GigsterChat/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoantonthat.GigsterChat;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		408614A71C974FBE00E73866 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = GigsterChatTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoantonthat.GigsterChatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GigsterChat.app/GigsterChat";
+			};
+			name = Debug;
+		};
+		408614A81C974FBE00E73866 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = GigsterChatTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoantonthat.GigsterChatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GigsterChat.app/GigsterChat";
+			};
+			name = Release;
+		};
+		408614AA1C974FBE00E73866 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = GigsterChatUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoantonthat.GigsterChatUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = GigsterChat;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		408614AB1C974FBE00E73866 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = GigsterChatUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoantonthat.GigsterChatUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = GigsterChat;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		408614711C974FBD00E73866 /* Build configuration list for PBXProject "GigsterChat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				408614A11C974FBE00E73866 /* Debug */,
+				408614A21C974FBE00E73866 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		408614A31C974FBE00E73866 /* Build configuration list for PBXNativeTarget "GigsterChat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				408614A41C974FBE00E73866 /* Debug */,
+				408614A51C974FBE00E73866 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		408614A61C974FBE00E73866 /* Build configuration list for PBXNativeTarget "GigsterChatTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				408614A71C974FBE00E73866 /* Debug */,
+				408614A81C974FBE00E73866 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		408614A91C974FBE00E73866 /* Build configuration list for PBXNativeTarget "GigsterChatUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				408614AA1C974FBE00E73866 /* Debug */,
+				408614AB1C974FBE00E73866 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4086146E1C974FBD00E73866 /* Project object */;
+}
