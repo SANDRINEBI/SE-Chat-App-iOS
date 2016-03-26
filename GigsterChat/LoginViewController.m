@@ -25,12 +25,14 @@
     [self setupNavBar];
     [self.emailField becomeFirstResponder];
     
-    self.emailField.layer.sublayerTransform = CATransform3DMakeTranslation(10, 0, 0);
-    self.passwordField.layer.sublayerTransform = CATransform3DMakeTranslation(10, 0, 0);
+//    self.emailField.layer.sublayerTransform = CATransform3DMakeTranslation(10, 0, 0);
+//    self.passwordField.layer.sublayerTransform = CATransform3DMakeTranslation(10, 0, 0);
 
 //    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, self.emailField.height)];
-//    self.emailField.leftView = paddingView;
+//    self.emailField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, self.emailField.height)];
 //    self.emailField.leftViewMode = UITextFieldViewModeAlways;
+//    self.emailField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, self.emailField.height)];
+//    self.emailField.rightViewMode = UITextFieldViewModeAlways;
     
 //    [self.emailField  setContentInset:UIEdgeInsetsMake(7, 7, 0, 0)];
 //    [self.passwordField  setContentInset:UIEdgeInsetsMake(7, 7, 0, 0)];
@@ -60,13 +62,22 @@
 
 - (IBAction)onLogin:(id)sender {
     [[API shared] login:self.emailField.text withPassword:self.passwordField.text callback:^(id response, NSError *error) {
-        NSLog(@"success login");
+        if(error) {
+            NSString *errorMessage;
+            if(response && response[@"message"]) {
+                errorMessage = response[@"message"];
+            } else {
+                errorMessage = @"There was an error connecting to the gigster servers";
+            }
+            
+            [UIAlertView showWithTitle:@"Login error" message:errorMessage cancelButtonTitle:@"Ok" otherButtonTitles:@[] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
+                
+            }];
+        } else {
+            NSLog(@"success login");
 
-        [[API shared] getGigs:^(id response, NSError *error) {
-            NSLog(@"gigs = %@", response);
-        }];
-
-        [self performSegueWithIdentifier:@"LoginToChatList" sender:nil];
+            [self performSegueWithIdentifier:@"LoginToChatList" sender:nil];
+        }
 
     }];
 

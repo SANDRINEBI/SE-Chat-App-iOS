@@ -33,6 +33,27 @@
     [self.chats addObject:@{@"name":@"Noah / SE Chat", @"unread": [NSNumber numberWithBool:YES], @"urgent": [NSNumber numberWithBool:NO], @"timestamp": [NSDate date], @"last_message": @"Cool! Well I can talk anytime outside that 3 - 4 window!", @"profile_url": @"https://graph.facebook.com/565956182/picture?width=120&height=120"}];
     [self.chats addObject:@{@"name":@"Hoan / Wardrobe iOS", @"unread": [NSNumber numberWithBool:YES], @"urgent": [NSNumber numberWithBool:YES], @"timestamp": [NSDate date], @"last_message": @"After UI tidy up", @"profile_url": @"https://graph.facebook.com/100009178679586/picture?width=120&height=120"}];
     [self.chats addObject:@{@"name":@"Erin / Project XY", @"unread": [NSNumber numberWithBool:NO], @"urgent": [NSNumber numberWithBool:NO], @"timestamp": [NSDate date], @"last_message": @"Oh OK - I take it all back", @"profile_url": @"https://graph.facebook.com/564664585/picture?width=120&height=120"}];
+    
+    [self loadGigs];
+}
+
+- (void)loadGigs {
+    self.chats = [NSMutableArray new];
+    [[API shared] getGigs:^(id response, NSError *error) {
+        NSLog(@"gigs = %@", response);
+        
+        [response[@"data"] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSMutableDictionary *chat = [NSMutableDictionary new];
+            [chat setObject:obj[@"name"] forKey:@"name"];
+            [chat setObject:@"https://graph.facebook.com/564664585/picture?width=120&height=120" forKey:@"profile_url"];
+            [chat setObject:[NSDate date] forKey:@"timestamp"];
+            [chat setObject:@"last_message" forKey:@"last_message"];
+            
+            [self.chats addObject:chat];
+        }];
+        [self.table reloadData];
+    }];
+
 }
 
 - (void)setupPullToRefresh {

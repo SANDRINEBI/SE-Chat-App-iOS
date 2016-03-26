@@ -18,3 +18,5 @@ pod 'SDWebImage'
 pod 'UIActivityIndicator-for-SDWebImage'
 pod 'AFNetworking'
 pod 'Firebase', '>= 2.5.0'
+pod 'DZNEmptyDataSet'
+
