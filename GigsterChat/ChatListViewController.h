@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ChatListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+#import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+
+@interface ChatListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource>
 
 @property (nonatomic, retain) IBOutlet UITableView *table;
 @property (nonatomic, retain) UIRefreshControl *refreshControl;
