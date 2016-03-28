@@ -41,7 +41,7 @@
             }
 
         }
-        
+        // https://gigster-dev.firebaseio.com/messages/
     }
     return self;
 }

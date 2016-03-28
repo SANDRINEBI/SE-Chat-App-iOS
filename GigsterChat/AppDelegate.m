@@ -11,6 +11,8 @@
 #import "AppDelegate.h"
 #import "API.h"
 
+#import <Firebase/Firebase.h>
+
 @interface AppDelegate ()
 
 @end
@@ -37,7 +39,13 @@
     } else {
         NSLog(@"Not logged in");
     }
-
+    
+//    Firebase *myRootRef = [[Firebase alloc] initWithUrl:@"https://gigster-dev.firebaseio.com/messages/55a8169a239fa903006172f0"];
+//    // Write data to Firebase
+////    [myRootRef setValue:@"Do you have data? You'll love Firebase."];
+//    [myRootRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+//        NSLog(@"%@ -> %@", snapshot.key, snapshot.value);
+//    }];
     
     return YES;
 }

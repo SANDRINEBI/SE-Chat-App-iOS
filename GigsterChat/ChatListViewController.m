@@ -43,7 +43,7 @@
 - (void)loadGigs {
     self.chats = [NSMutableArray new];
     [[API shared] getGigs:^(id response, NSError *error) {
-        NSLog(@"gigs = %@", response);
+//        NSLog(@"gigs = %@", response);
         
         [response[@"data"] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSMutableDictionary *chat = [NSMutableDictionary new];
@@ -51,6 +51,7 @@
             [chat setObject:@"https://graph.facebook.com/564664585/picture?width=120&height=120" forKey:@"profile_url"];
             [chat setObject:[NSDate date] forKey:@"timestamp"];
             [chat setObject:@"last_message" forKey:@"last_message"];
+            [chat setObject:obj[@"_id"] forKey:@"_id"];
             
             [self.chats addObject:chat];
         }];
@@ -140,6 +141,8 @@
     
     NSDictionary *info = self.chats[indexPath.row];
 //    [self performSegueWithIdentifier:@"ChatListToChat" sender:info];
+    
+    NSLog(@"cinfo = %@", info);
     
     ChatViewController *vc = [[ChatViewController alloc] init];
     [vc setChatInfo:info];

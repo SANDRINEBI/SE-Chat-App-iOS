@@ -14,6 +14,7 @@
 #import <JSQMessagesViewController/JSQMessagesAvatarImageFactory.h>
 
 #import <FrameAccessor/FrameAccessor.h>
+#import <Firebase/Firebase.h>
 
 @interface ChatViewController ()
 
@@ -58,6 +59,50 @@
     [UIMenuController sharedMenuController].menuItems = @[ [[UIMenuItem alloc] initWithTitle:@"Custom Action"
                                                                                       action:@selector(customAction:)] ];
     [JSQMessagesCollectionViewCell registerMenuAction:@selector(delete:)];
+    
+    [self loadFromFirebase];
+}
+
+- (void)loadFromFirebase {
+    NSString *chatUrl = [NSString stringWithFormat:@"https://gigster-dev.firebaseio.com/messages/%@", self.info[@"_id"]];
+    NSLog(@"fburl = %@", chatUrl);
+    Firebase *ref = [[Firebase alloc] initWithUrl:chatUrl];
+    [ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"child added");
+        
+        id obj = snapshot.value;
+        JSQMessage *message = [JSQMessage messageWithSenderId:@"1" displayName:obj[@"firstName"] text:obj[@"text"]];
+        
+        [self.messages addObject:message];
+        [self.collectionView reloadData];
+        [self scrollToBottomAnimated:YES];
+
+//        NSLog(@"%@", snapshot.value[@"author"]);
+//        NSLog(@"%@", snapshot.value[@"title"]);
+    }];
+    // hereo
+/*    [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"%@ -> %@", snapshot.key, snapshot.value);
+        
+        if(snapshot.value && snapshot.value != [NSNull
+                                                null]) {
+            
+            NSLog(@"snval=%@", snapshot.value);
+            
+            [snapshot.value enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+                NSLog(@"chat=%@",obj);
+                JSQMessage *message = [JSQMessage messageWithSenderId:@"1" displayName:obj[@"firstName"] text:obj[@"text"]];
+                
+                [self.messages addObject:message];
+                [self.collectionView reloadData];
+                [self scrollToBottomAnimated:YES];
+
+            }];
+            
+        }
+
+    }];*/
+
 }
 
 - (void)onInfo:(id)sender {
