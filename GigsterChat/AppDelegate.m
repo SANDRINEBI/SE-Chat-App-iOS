@@ -9,6 +9,7 @@
 #define BLUE_COLOR [UIColor colorWithRed:39/255.0 green:128/255.0 blue:218/255.0 alpha:1.0]
 
 #import "AppDelegate.h"
+#import "API.h"
 
 @interface AppDelegate ()
 
@@ -22,6 +23,21 @@
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
 
     [[UINavigationBar appearance] setBarTintColor:BLUE_COLOR];
+    
+    if([[API shared] currentUser]) {
+        NSLog(@"Have user, login");
+        
+//        NSLog(@"current user = %@", [[API shared] currentUser]);
+        
+        UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+        UIViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"ChatListViewController"];
+        
+        UINavigationController *navViewController = (UINavigationController*)self.window.rootViewController;
+        [navViewController setViewControllers:@[rootViewController]];
+    } else {
+        NSLog(@"Not logged in");
+    }
+
     
     return YES;
 }

@@ -27,8 +27,49 @@
     if (self = [super init]) {
         self.manager = [AFHTTPSessionManager manager];
         self.baseURL = @"https://app.gigster.com";
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if([defaults objectForKey:@"currentUser"]) {
+            NSString *currentUserStr = [defaults objectForKey:@"currentUser"];
+            NSData *currentUserData = [currentUserStr dataUsingEncoding:NSUTF8StringEncoding];
+            
+            NSError *readError;
+            id currentUser = [NSJSONSerialization JSONObjectWithData:currentUserData options:0 error:&readError];
+            if(!readError) {
+                self.currentUser = currentUser;
+                NSLog(@"loaded current user from defaults");
+            }
+
+        }
+        
     }
     return self;
+}
+
+- (void)saveCurrentUser:(id)currentUser {
+    self.currentUser = currentUser;
+    
+    NSError *writeError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:currentUser options:NSJSONWritingPrettyPrinted error:&writeError];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    if(!writeError) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:jsonString forKey:@"currentUser"];
+        [defaults synchronize];
+        
+        NSLog(@"saved current user");
+    } else {
+        NSLog(@"error saving current user");
+    }
+}
+
+- (void)clearCurrentUser {
+    self.currentUser = nil;
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObjectForKey:@"currentUser"];
+    [defaults synchronize];
 }
 
 - (void)POST:(NSString*)urlString parameters:(NSDictionary*)params progress:(nullable void (^)(NSProgress * _Nonnull))uploadProgress completion:(APIBlock)completion {
@@ -58,7 +99,14 @@
     
     NSDictionary *params = @{@"email": email, @"password": password};
     
-    [self POST:urlString parameters:params progress:nil completion:cb];
+    [self POST:urlString parameters:params progress:nil completion:^(id response, NSError *error) {
+        if(!error) {
+            [self saveCurrentUser:response];
+            cb(response, error);
+        } else {
+            cb(response, error);
+        }
+    }];
     
 //    [self.manager POST:urlString parameters:params progress:nil success:^(NSURLSessionTask *task, id responseObject) {
 //        self.currentUser = responseObject;
@@ -103,8 +151,7 @@
 }
 
 - (void)logout {
-    self.currentUser = nil;
-    
+    [self clearCurrentUser];
     
 
 }

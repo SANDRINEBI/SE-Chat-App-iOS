@@ -18,7 +18,9 @@ typedef void (^APIBlock)(id response, NSError *error);
 @property (nonatomic, retain) id currentUser;
 
 + (API*)shared;
+- (void)saveCurrentUser:(id)currentUser;
 - (void)login:(NSString*)email withPassword:(NSString*)password callback:(APIBlock)cb;
+- (void)logout;
 - (void)getMe:(APIBlock)cb;
 - (void)getGigs:(APIBlock)cb;
 - (void)saveDeviceToken:(NSString*)token callback:(APIBlock)cb;

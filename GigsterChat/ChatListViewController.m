@@ -99,6 +99,7 @@
         } else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Logout"]) {
             [UIAlertView showWithTitle:@"Logout?" message:@"Are you sure you want to logout?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Logout"] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
                 if([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Logout"]) {
+                    [[API shared] logout];
                     [self performSegueWithIdentifier:@"ChatListToLogin" sender:nil];
                 }
             }];

@@ -75,21 +75,11 @@
             }];
         } else {
             NSLog(@"success login");
-
+            
             [self performSegueWithIdentifier:@"LoginToChatList" sender:nil];
         }
 
     }];
-
-//    if([self.passwordField.text isEqualToString:@"gigster"]) {
-        // Success
-        
-//        [self performSegueWithIdentifier:@"LoginToChatList" sender:nil];
-//    } else {
-//        [UIAlertView showWithTitle:@"Can't login" message:@"[SERVER MESSAGE GOES HERE]" cancelButtonTitle:@"Ok" otherButtonTitles:nil tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
-//            
-//        }];
-//    }
 }
 
 - (IBAction)onForgot:(id)sender {
