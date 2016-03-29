@@ -7,6 +7,7 @@
 //
 
 #import "ChatViewController.h"
+#import "API.h"
 
 #import <JSQMessagesViewController/JSQMessagesViewController.h>
 #import <JSQMessagesViewController/JSQMessage.h>
@@ -28,13 +29,16 @@
     
     self.messages = [NSMutableArray new];
     
-    [self.messages addObject:[JSQMessage messageWithSenderId:@"2" displayName:@"Erin" text:@"Hey Catherine - Can you please creat the proposal for this? Want to get it kicked off ASAP. Here's the spec. http://docs.google.com/somefreakingurl"]];
-    [self.messages addObject:[JSQMessage messageWithSenderId:@"1" displayName:@"Hoan" text:@"Wonderful, thanks for sharing and I'll get started on this proposal. I'll ping you when its read"]];
-    [self.messages addObject:[JSQMessage messageWithSenderId:@"1" displayName:@"Hoan" text:@"We're ready to go! Take a look at the proposal"]];
-    [self.messages addObject:[JSQMessage messageWithSenderId:@"2" displayName:@"Erin" text:@"How'd you do that so fast? You're miracle workers!"]];
+/*    NSString *senderId = [[API shared] currentUser][@"_id"];
+    NSString *senderName = [[API shared] currentUser][@"name"];
     
-    self.senderId = @"1";
-    self.senderDisplayName = @"Hoan";
+    [self.messages addObject:[JSQMessage messageWithSenderId:@"2" displayName:@"Erin" text:@"Hey Catherine - Can you please creat the proposal for this? Want to get it kicked off ASAP. Here's the spec. http://docs.google.com/somefreakingurl"]];
+    [self.messages addObject:[JSQMessage messageWithSenderId:senderId displayName:senderName text:@"Wonderful, thanks for sharing and I'll get started on this proposal. I'll ping you when its read"]];
+    [self.messages addObject:[JSQMessage messageWithSenderId:senderId displayName:senderName text:@"We're ready to go! Take a look at the proposal"]];
+    [self.messages addObject:[JSQMessage messageWithSenderId:@"2" displayName:@"Erin" text:@"How'd you do that so fast? You're miracle workers!"]];*/
+    
+//    self.senderId = @"1";
+//    self.senderDisplayName = @"Hoan";
 
     self.inputToolbar.contentView.textView.pasteDelegate = self;
     self.inputToolbar.contentView.leftBarButtonItem = nil;
@@ -68,9 +72,9 @@
     NSLog(@"fburl = %@", chatUrl);
     Firebase *ref = [[Firebase alloc] initWithUrl:chatUrl];
     [ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"child added");
-        
         id obj = snapshot.value;
+        NSLog(@"child added, %@", obj);
+
         JSQMessage *message = [JSQMessage messageWithSenderId:@"1" displayName:obj[@"firstName"] text:obj[@"text"]];
         
         [self.messages addObject:message];
@@ -179,11 +183,11 @@
 }
 
 - (NSString *)senderDisplayName {
-    return @"Hoan";
+    return [[API shared] currentUser][@"name"];
 }
 
 - (NSString *)senderId {
-    return @"1";
+    return [[API shared] currentUser][@"_id"];
 }
 
 - (void)collectionView:(JSQMessagesCollectionView *)collectionView didDeleteMessageAtIndexPath:(NSIndexPath *)indexPath {
