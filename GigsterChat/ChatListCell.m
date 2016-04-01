@@ -11,6 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <FrameAccessor/FrameAccessor.h>
 #import <DateTools/NSDate+DateTools.h>
+#import <NSStringEmojize/NSString+Emojize.h>
 
 @implementation ChatListCell
 
@@ -43,7 +44,7 @@
     }];
     
     [self.topLabel setText:info[@"name"]];
-    [self.bodyLabel setText:info[@"last_message"]];
+    [self.bodyLabel setText:[info[@"last_message"] emojizedString]];
     
     self.dotView.layer.cornerRadius = self.dotView.width/2;
     [self.dotView setHidden:![info[@"unread"] boolValue]];
