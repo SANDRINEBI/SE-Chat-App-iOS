@@ -19,4 +19,5 @@ pod 'UIActivityIndicator-for-SDWebImage'
 pod 'AFNetworking'
 pod 'DZNEmptyDataSet'
 pod 'Firebase', '>= 2.5.0'
-
+pod 'NSStringEmojize', :git => "https://github.com/hoan/NSStringEmojize"
+pod 'DateTools'

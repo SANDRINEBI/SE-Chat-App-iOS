@@ -8,6 +8,7 @@
 
 #define BLUE_COLOR [UIColor colorWithRed:39/255.0 green:128/255.0 blue:218/255.0 alpha:1.0];
 
+#import "AppDelegate.h"
 #import "API.h"
 #import "ChatListViewController.h"
 #import "ChatViewController.h"
@@ -38,26 +39,91 @@
     [self.chats addObject:@{@"name":@"Erin / Project XY", @"unread": [NSNumber numberWithBool:NO], @"urgent": [NSNumber numberWithBool:NO], @"timestamp": [NSDate date], @"last_message": @"Oh OK - I take it all back", @"profile_url": @"https://graph.facebook.com/564664585/picture?width=120&height=120"}];
     
     [self loadGigs];
+    
+    AppDelegate *app = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [app requestPushPermissions];
+    
+    self.firebase = [[Firebase alloc] initWithUrl:@"https://gigster-debo.firebaseio.com/messages/"];
 }
 
 - (void)loadGigs {
     self.chats = [NSMutableArray new];
-    [[API shared] getGigs:^(id response, NSError *error) {
-//        NSLog(@"gigs = %@", response);
+    [[API shared] getGigs:^(id gigsResponse, NSError *error) {
+        NSLog(@"gigs = %@", gigsResponse);
         
-        [response[@"data"] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSMutableDictionary *chat = [NSMutableDictionary new];
-            [chat setObject:obj[@"name"] forKey:@"name"];
-            [chat setObject:@"https://graph.facebook.com/564664585/picture?width=120&height=120" forKey:@"profile_url"];
-            [chat setObject:[NSDate date] forKey:@"timestamp"];
-            [chat setObject:@"last_message" forKey:@"last_message"];
-            [chat setObject:obj[@"_id"] forKey:@"_id"];
-            
-            [self.chats addObject:chat];
+        NSMutableArray *posterIds = [NSMutableArray new];
+        
+        [gigsResponse[@"data"] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [posterIds addObject:obj[@"poster"][@"_id"]];
+//            NSMutableDictionary *chat = [NSMutableDictionary new];
+//            [chat setObject:obj[@"name"] forKey:@"name"];
+//            [chat setObject:@"https://graph.facebook.com/564664585/picture?width=120&height=120" forKey:@"profile_url"];
+//            [chat setObject:[NSDate date] forKey:@"timestamp"];
+//            [chat setObject:@"last_message" forKey:@"last_message"];
+//            [chat setObject:obj[@"_id"] forKey:@"_id"];
+//            
+//            [self.chats addObject:chat];
         }];
-        [self.table reloadData];
+        
+        NSLog(@"posterIds = %@", posterIds);
+        
+//        posterIds = @[@"545bbbdd67c0a9020018a36b"];
+        
+        [[API shared] getUsers:posterIds callback:^(id posterResponse, NSError *error) {
+            NSLog(@"posters = %@", posterResponse);
+        
+            [gigsResponse[@"data"] enumerateObjectsUsingBlock:^(id  _Nonnull gig, NSUInteger idx, BOOL * _Nonnull stop) {
+                id poster = posterResponse[@"users"][idx];
+//                id poster = gig[@"poster"];
+                
+                NSString *profileUrl = poster[@"img_url"];
+                if(!profileUrl) profileUrl = @"https://app.gigster.com/media/sprites/generic-avatars/av1.png";
+                
+                NSMutableDictionary *chat = [NSMutableDictionary new];
+                [chat setObject:gig[@"name"] forKey:@"name"];
+                [chat setObject:gig[@"_id"] forKey:@"_id"];
+                [chat setObject:profileUrl forKey:@"profile_url"];
+                [chat setObject:[NSNull null] forKey:@"timestamp"];
+                [chat setObject:@"" forKey:@"last_message"];
+                
+                [self.chats addObject:chat];
+            }];
+            
+            [self.table reloadData];
+            [self loadLastMessages];
+
+        }];
+        
+        
     }];
 
+}
+
+- (void)loadLastMessages {
+    [self.chats enumerateObjectsUsingBlock:^(NSMutableDictionary *chat, NSUInteger idx, BOOL * _Nonnull stop) {
+        Firebase *ref = [self.firebase childByAppendingPath:chat[@"_id"]];
+//        [[[ref queryEqualToValue:@"text" childKey:@"type"] queryLimitedToLast:1]  observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+        [[[ref queryOrderedByChild:@"timestamp"] queryLimitedToLast:1] observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+            NSLog(@"OMGGG : %@ %@", snapshot.key, snapshot.value);
+            
+            if([snapshot.value[@"type"] isEqualToString:@"typing"]) {
+                [chat setObject:@"... is typing" forKey:@"last_message"];
+            } else if([snapshot.value[@"type"] isEqualToString:@"text"]) {
+                [chat setObject:snapshot.value[@"text"] forKey:@"last_message"];
+            } else {
+                [chat setObject:@"Attachment" forKey:@"last_message"];
+            }
+            
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:([snapshot.value[@"timestamp"] doubleValue]/1000.0f)];
+            [chat setObject:date forKey:@"timestamp"];
+            
+            [self.table reloadData];
+        }];
+
+    }];
+    
+    
+    
 }
 
 - (void)setupPullToRefresh {

@@ -25,6 +25,6 @@ typedef void (^APIBlock)(id response, NSError *error);
 - (void)getGigs:(APIBlock)cb;
 - (void)getUsers:(NSArray*)userIds callback:(APIBlock)cb;
 - (void)saveDeviceToken:(NSString*)token callback:(APIBlock)cb;
-- (void)sendMessage:(NSString*)text toGig:(NSString*)gigId callback:(APIBlock)cb;
-//56d253e759577729009fb3c7
+- (void)sendMessage:(NSDictionary*)params toGig:(NSString*)gigId callback:(APIBlock)cb;
+
 @end

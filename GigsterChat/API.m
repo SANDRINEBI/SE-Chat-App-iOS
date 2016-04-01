@@ -83,6 +83,21 @@
     }];
 }
 
+- (void)POST:(NSString*)urlString JSON:(id)json progress:(nullable void (^)(NSProgress * _Nonnull))uploadProgress completion:(APIBlock)completion {
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+
+    [manager POST:urlString parameters:json progress:uploadProgress success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        completion(responseObject, nil);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSString *errStr = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
+        NSData *errData = [errStr dataUsingEncoding:NSUTF8StringEncoding];
+        id errJson = [NSJSONSerialization JSONObjectWithData:errData options:0 error:nil];
+        completion(errJson, error);
+    }];
+}
+
 - (void)GET:(NSString*)urlString parameters:(NSDictionary*)params progress:(nullable void (^)(NSProgress * _Nonnull))uploadProgress completion:(APIBlock)completion {
     [self.manager GET:urlString parameters:params progress:uploadProgress success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         completion(responseObject, nil);
@@ -130,6 +145,12 @@
     [self GET:urlString parameters:nil progress:nil completion:cb];
 }
 
+- (void)getUsers:(NSArray*)userIds callback:(APIBlock)cb {
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/users/batch", self.baseURL];
+    
+    [self POST:urlString JSON:userIds progress:nil completion:cb];
+}
+
 - (void)saveDeviceToken:(NSString*)token callback:(APIBlock)cb {
     NSString *userId = self.currentUser[@"_id"];
     NSString *urlString = [NSString stringWithFormat:@"%@/api/v1/users/%@/devices/apns?token=%@", self.baseURL, userId, token];
@@ -137,7 +158,26 @@
     [self POST:urlString parameters:nil progress:nil completion:cb];
 }
 
-- (void)sendMessage:(NSString*)text toGig:(NSString*)gigId callback:(APIBlock)cb {
+- (void)sendMessage:(NSDictionary*)params toGig:(NSString*)gigId callback:(APIBlock)cb {
+//    /api/v1/gigs/:gig_id/messages
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/v1/gigs/%@/messages", self.baseURL, gigId];
+    
+//    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+//    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+//    [self.manager POST:urlString parameters:@{@"type":@"text", @"text": text, @"toClient": @"1"} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [self.manager POST:urlString parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        cb(responseObject, nil);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSString *errStr = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
+        NSData *errData = [errStr dataUsingEncoding:NSUTF8StringEncoding];
+        id errJson = [NSJSONSerialization JSONObjectWithData:errData options:0 error:nil];
+        cb(errJson, error);
+    }];
+
+
+    
 //    NSString *userId = self.currentUser[@"_id"];
 //    NSString *urlString = [NSString stringWithFormat:@"%@/api/v1/users/%@/devices/apns?token=%@", self.baseURL, userId, token];
 //    

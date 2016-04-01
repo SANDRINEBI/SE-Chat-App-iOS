@@ -12,6 +12,7 @@
 #import "API.h"
 
 #import <Firebase/Firebase.h>
+#import <NSStringEmojize/NSString+Emojize.h>
 
 @interface AppDelegate ()
 
@@ -25,6 +26,12 @@
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
 
     [[UINavigationBar appearance] setBarTintColor:BLUE_COLOR];
+    
+    NSString *s1 = [@"test emojize :sunglasses:" emojizedString];
+    NSString *s2 = [@"test unemojize 😎" unemojizedString];
+    
+    NSLog(@"%@", s1);
+    NSLog(@"%@", s2);
     
     if([[API shared] currentUser]) {
         NSLog(@"Have user, login");
@@ -40,15 +47,45 @@
         NSLog(@"Not logged in");
     }
     
-//    Firebase *myRootRef = [[Firebase alloc] initWithUrl:@"https://gigster-dev.firebaseio.com/messages/55a8169a239fa903006172f0"];
-//    // Write data to Firebase
-////    [myRootRef setValue:@"Do you have data? You'll love Firebase."];
+//    Firebase *myRootRef = [[Firebase alloc] initWithUrl:@"https://gigster-debo.firebaseio.com/messages/"];
 //    [myRootRef observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
 //        NSLog(@"%@ -> %@", snapshot.key, snapshot.value);
 //    }];
     
     return YES;
 }
+
+- (void)requestPushPermissions {
+    NSLog(@"requesting permissions...");
+
+    // SETUP CATEGORIES
+    NSSet *categories = nil;
+    UIApplication *application = [UIApplication sharedApplication];
+    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
+    
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes categories:categories];
+    [application registerUserNotificationSettings:settings];
+    [application registerForRemoteNotifications];
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    NSLog(@"save push token permissions...");
+    
+    // Store the deviceToken in the current Installation and save it to Parse
+    NSLog(@"token = %@", deviceToken);
+    
+    NSString *realDeviceToken = [[[[deviceToken description]
+                                      stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                                     stringByReplacingOccurrencesOfString: @">" withString: @""]
+                                    stringByReplacingOccurrencesOfString: @" " withString: @""];
+    
+    NSLog(@"token = %@", realDeviceToken);
+
+    [[API shared] saveDeviceToken:realDeviceToken callback:^(id response, NSError *error) {
+        NSLog(@"%@ - %@", response, error);
+    }];
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

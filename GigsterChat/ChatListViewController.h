@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+#import <Firebase/Firebase.h>
 
 @interface ChatListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource>
 
@@ -16,6 +17,8 @@
 @property (nonatomic, retain) UIRefreshControl *refreshControl;
 
 @property (nonatomic, retain) NSMutableArray *chats;
+
+@property (nonatomic, retain) Firebase *firebase;
 
 @end
 

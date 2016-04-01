@@ -10,6 +10,7 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <FrameAccessor/FrameAccessor.h>
+#import <DateTools/NSDate+DateTools.h>
 
 @implementation ChatListCell
 
@@ -55,6 +56,13 @@
         UIColor *blueColor = [UIColor colorWithRed:33/255.0 green:129/255.0 blue:246/255.0 alpha:1.0];
         [self.dotView setBackgroundColor:blueColor];
         [self.timeLabel setTextColor:[UIColor lightGrayColor]];
+    }
+    
+    
+    if(info[@"timestamp"] != [NSNull null]) {
+        NSDate *date = info[@"timestamp"];
+        NSLog(@"%@", [date shortTimeAgoSinceNow]);
+        [self.timeLabel setText:[date shortTimeAgoSinceNow]];
     }
 }
 

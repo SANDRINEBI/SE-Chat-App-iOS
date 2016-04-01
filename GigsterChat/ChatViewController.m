@@ -13,6 +13,7 @@
 #import <JSQMessagesViewController/JSQMessage.h>
 #import <JSQMessagesViewController/JSQMessagesBubbleImageFactory.h>
 #import <JSQMessagesViewController/JSQMessagesAvatarImageFactory.h>
+#import <NSStringEmojize/NSString+Emojize.h>
 
 #import <FrameAccessor/FrameAccessor.h>
 #import <Firebase/Firebase.h>
@@ -32,7 +33,7 @@
 /*    NSString *senderId = [[API shared] currentUser][@"_id"];
     NSString *senderName = [[API shared] currentUser][@"name"];
     
-    [self.messages addObject:[JSQMessage messageWithSenderId:@"2" displayName:@"Erin" text:@"Hey Catherine - Can you please creat the proposal for this? Want to get it kicked off ASAP. Here's the spec. http://docs.google.com/somefreakingurl"]];
+    [self.messages addObject:[JSQMessage messageWithSenderId:@"2" displayName:@"Erin" text:@"Hey Catherine - Can you please creat the proposal for this? Want to get it kicked off ASAP. Here's the spec. ht tp://docs.google.com/somefreakingurl"]];
     [self.messages addObject:[JSQMessage messageWithSenderId:senderId displayName:senderName text:@"Wonderful, thanks for sharing and I'll get started on this proposal. I'll ping you when its read"]];
     [self.messages addObject:[JSQMessage messageWithSenderId:senderId displayName:senderName text:@"We're ready to go! Take a look at the proposal"]];
     [self.messages addObject:[JSQMessage messageWithSenderId:@"2" displayName:@"Erin" text:@"How'd you do that so fast? You're miracle workers!"]];*/
@@ -59,54 +60,43 @@
 //                                                                              style:UIBarButtonItemStyleBordered
 //                                                                             target:self
 //                                                                             action:@selector(receiveMessagePressed:)];
-    [JSQMessagesCollectionViewCell registerMenuAction:@selector(customAction:)];
-    [UIMenuController sharedMenuController].menuItems = @[ [[UIMenuItem alloc] initWithTitle:@"Custom Action"
-                                                                                      action:@selector(customAction:)] ];
+//    [JSQMessagesCollectionViewCell registerMenuAction:@selector(customAction:)];
+//    [UIMenuController sharedMenuController].menuItems = @[ [[UIMenuItem alloc] initWithTitle:@"Custom Action"
+//                                                                                      action:@selector(customAction:)] ];
     [JSQMessagesCollectionViewCell registerMenuAction:@selector(delete:)];
     
     [self loadFromFirebase];
 }
 
 - (void)loadFromFirebase {
-    NSString *chatUrl = [NSString stringWithFormat:@"https://gigster-dev.firebaseio.com/messages/%@", self.info[@"_id"]];
+//    NSString *chatUrl = [NSString stringWithFormat:@"https://gigster-dev.firebaseio.com/messages/%@", self.info[@"_id"]]; // TEST
+    NSString *chatUrl = [NSString stringWithFormat:@"https://gigster-debo.firebaseio.com/messages/%@", self.info[@"_id"]]; // PROD
     NSLog(@"fburl = %@", chatUrl);
     Firebase *ref = [[Firebase alloc] initWithUrl:chatUrl];
     [ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
         id obj = snapshot.value;
-        NSLog(@"child added, %@", obj);
-
-        JSQMessage *message = [JSQMessage messageWithSenderId:@"1" displayName:obj[@"firstName"] text:obj[@"text"]];
         
-        [self.messages addObject:message];
-        [self.collectionView reloadData];
-        [self scrollToBottomAnimated:YES];
+        if([obj[@"type"] isEqualToString:@"text"]) {
+            NSLog(@"text child added, %@", obj);
+            
+            NSString *text = [obj[@"text"] emojizedString];
+            NSString *displayName = obj[@"firstName"];
+            NSString *toClient = [obj[@"toClient"] boolValue] ? @"1" : @"0";
+            if(!displayName || displayName == [NSNull null]) displayName=@" ";
+            
+            NSLog(@"text = %@", text);
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:([obj[@"timestamp"] doubleValue]/1000.0f)];
+            
+//            JSQMessage *message = [JSQMessage messageWithSenderId:toClient displayName:displayName text:text];
+            JSQMessage *message = [[JSQMessage alloc] initWithSenderId:toClient senderDisplayName:displayName date:date text:text];
 
-//        NSLog(@"%@", snapshot.value[@"author"]);
-//        NSLog(@"%@", snapshot.value[@"title"]);
-    }];
-    // hereo
-/*    [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"%@ -> %@", snapshot.key, snapshot.value);
-        
-        if(snapshot.value && snapshot.value != [NSNull
-                                                null]) {
-            
-            NSLog(@"snval=%@", snapshot.value);
-            
-            [snapshot.value enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-                NSLog(@"chat=%@",obj);
-                JSQMessage *message = [JSQMessage messageWithSenderId:@"1" displayName:obj[@"firstName"] text:obj[@"text"]];
-                
-                [self.messages addObject:message];
-                [self.collectionView reloadData];
-                [self scrollToBottomAnimated:YES];
-
-            }];
-            
+            [self.messages addObject:message];
+            [self.collectionView reloadData];
+            [self scrollToBottomAnimated:YES];
+        } else {
+            NSLog(@"skipping, %@", obj[@"type"]);
         }
-
-    }];*/
-
+    }];
 }
 
 - (void)onInfo:(id)sender {
@@ -131,7 +121,7 @@
      *  You must set this from `viewDidAppear:`
      *  Note: this feature is mostly stable, but still experimental
      */
-    self.collectionView.collectionViewLayout.springinessEnabled = YES;
+    self.collectionView.collectionViewLayout.springinessEnabled = NO;
 }
 
 
@@ -151,12 +141,20 @@
          senderDisplayName:(NSString *)senderDisplayName
                       date:(NSDate *)date
 {
-    JSQMessage *message = [[JSQMessage alloc] initWithSenderId:senderId
-                                             senderDisplayName:senderDisplayName
-                                                          date:date
-                                                          text:text];
+    NSString *realText = [text unemojizedString];
+    NSLog(@"sending: %@", realText);
+//    JSQMessage *message = [[JSQMessage alloc] initWithSenderId:senderId
+//                                             senderDisplayName:senderDisplayName
+//                                                          date:date
+//                                                          text:text];
+//    
+//    [self.messages addObject:message];
     
-    [self.messages addObject:message];
+    NSDictionary *params = @{@"type": @"text", @"toClient": @"1", @"text": realText, @"isWireframe": @"0", @"showAuto": @"0", @"isProposalReady": @"0"};
+    
+    [[API shared] sendMessage:params toGig:self.info[@"_id"] callback:^(id response, NSError *error) {
+        NSLog(@"%@ %@", response, error);
+    }];
     
     [self finishSendingMessageAnimated:YES];
 }
@@ -187,7 +185,7 @@
 }
 
 - (NSString *)senderId {
-    return [[API shared] currentUser][@"_id"];
+    return @"1";// toClient
 }
 
 - (void)collectionView:(JSQMessagesCollectionView *)collectionView didDeleteMessageAtIndexPath:(NSIndexPath *)indexPath {
@@ -278,13 +276,13 @@
      *  iOS7-style sender name labels
      */
     JSQMessage *currentMessage = [self.messages objectAtIndex:indexPath.item];
-    if ([[currentMessage senderId] isEqualToString:self.senderId]) {
-        return 0.0f;
-    }
+//    if ([[currentMessage senderDisplayName] isEqualToString:self.senderDisplayName]) {
+//        return 0.0f;
+//    }
     
     if (indexPath.item - 1 > 0) {
         JSQMessage *previousMessage = [self.messages objectAtIndex:indexPath.item - 1];
-        if ([[previousMessage senderId] isEqualToString:[currentMessage senderId]]) {
+        if ([[previousMessage senderDisplayName] isEqualToString:[currentMessage senderDisplayName]]) {
             return 0.0f;
         }
     }
@@ -306,13 +304,13 @@
     /**
      *  iOS7-style sender name labels
      */
-    if ([message.senderId isEqualToString:self.senderId]) {
-        return nil;
-    }
+//    if ([message.senderDisplayName isEqualToString:self.senderDisplayName]) {
+//        return nil;
+//    }
     
     if (indexPath.item - 1 > 0) {
         JSQMessage *previousMessage = [self.messages objectAtIndex:indexPath.item - 1];
-        if ([[previousMessage senderId] isEqualToString:message.senderId]) {
+        if ([[previousMessage senderDisplayName] isEqualToString:message.senderDisplayName]) {
             return nil;
         }
     }
