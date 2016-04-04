@@ -41,8 +41,10 @@
 //    self.senderId = @"1";
 //    self.senderDisplayName = @"Hoan";
 
-    UIButton *phoneButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
-    [phoneButton setImage:[UIImage imageNamed:@"phone-icon"] forState:UIControlStateNormal];
+    UIImage *phoneImage = [[UIImage imageNamed:@"phone-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIButton *phoneButton = [[UIButton alloc] init];
+    [phoneButton setImage:phoneImage forState:UIControlStateNormal];
+    phoneButton.tintColor = [UIColor lightGrayColor];
     
     self.inputToolbar.contentView.leftBarButtonItem = phoneButton;
     self.showLoadEarlierMessagesHeader = NO;

@@ -75,14 +75,14 @@
             [chat setObject:profileUrl forKey:@"profile_url"];
             [chat setObject:[NSNull null] forKey:@"timestamp"];
             [chat setObject:@"" forKey:@"last_message"];
-    //                    [chat setObject:gig forKey:@"info"];
-                [chat setObject:gig[@"poster"] forKey:@"poster"];
+            [chat setObject:gig[@"poster"] forKey:@"poster"];
+            [chat setObject:gig forKey:@"gig"];
             
             [self.chats addObject:chat];
         }];
     
         [self.table reloadData];
-        [self loadLastMessages];
+//        [self loadLastMessages];
         
     }];
 }
@@ -95,7 +95,7 @@
             NSLog(@"OMGGG : %@ %@", snapshot.key, snapshot.value);
             
             if([snapshot.value[@"type"] isEqualToString:@"typing"]) {
-                [chat setObject:@"... is typing" forKey:@"last_message"];
+                [chat setObject:@"" forKey:@"last_message"];
             } else if([snapshot.value[@"type"] isEqualToString:@"text"]) {
                 [chat setObject:snapshot.value[@"text"] forKey:@"last_message"];
             } else {
