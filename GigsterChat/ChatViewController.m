@@ -17,6 +17,7 @@
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 #import <FrameAccessor/FrameAccessor.h>
 #import <Firebase/Firebase.h>
+#import <TOWebViewController/TOWebViewController.h>
 
 @interface ChatViewController ()
 
@@ -109,7 +110,13 @@
 }
 
 - (void)onInfo:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://app.gigster.com"]];
+    //https://app.gigster.com/gig/gigster/56f3e92b4dab04430075c2a4
+    NSString *url = [NSString stringWithFormat:@"https://app.gigster.com/gig/gigster/%@", self.info[@"_id"]];
+    
+    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+    
+    TOWebViewController *vc = [[TOWebViewController alloc] initWithURLString:url];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -49,6 +49,7 @@
 - (void)loadGigs {
     self.chats = [NSMutableArray new];
     [[API shared] getGigs:^(id gigsResponse, NSError *error) {
+//        NSLog(@"gigs = %@", gigsResponse);
         
         [gigsResponse[@"data"] enumerateObjectsUsingBlock:^(id  _Nonnull gig, NSUInteger idx, BOOL * _Nonnull stop) {
             id poster = gig[@"poster"];
