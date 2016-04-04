@@ -341,7 +341,7 @@
 //    [UIAlertView show]
     NSLog(@"phone pressed");
     
-    if(self.info[@"poster"][@"phone"]) {
+    if(self.info[@"poster"][@"phone"] && self.info[@"poster"][@"phone"] != [NSNull null] && ![self.info[@"poster"][@"phone"] isEqualToString:@""]) {
         NSLog(@"phone %@", self.info[@"poster"][@"phone"]);
         NSString *realPhone = [NSString stringWithFormat:@"+%@",self.info[@"poster"][@"phone"]];
         NSString *message   = [NSString stringWithFormat:@"Do you want to call %@?", realPhone];
