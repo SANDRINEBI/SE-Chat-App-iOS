@@ -11,6 +11,7 @@
 
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 #import <FrameAccessor/FrameAccessor.h>
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface LoginViewController ()
 
@@ -69,7 +70,10 @@
 
 
 - (IBAction)onLogin:(id)sender {
+    [SVProgressHUD show];
+    
     [[API shared] login:self.emailField.text withPassword:self.passwordField.text callback:^(id response, NSError *error) {
+        [SVProgressHUD dismiss];
         if(error) {
             NSString *errorMessage;
             if(response && response[@"message"]) {

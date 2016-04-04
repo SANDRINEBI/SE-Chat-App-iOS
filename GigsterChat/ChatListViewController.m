@@ -16,6 +16,8 @@
 
 #import <UIActionSheet+Blocks/UIActionSheet+Blocks.h>
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <TOWebViewController/TOWebViewController.h>
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface ChatListViewController ()
 
@@ -38,6 +40,7 @@
     [self.chats addObject:@{@"name":@"Hoan / Wardrobe iOS", @"unread": [NSNumber numberWithBool:YES], @"urgent": [NSNumber numberWithBool:YES], @"timestamp": [NSDate date], @"last_message": @"After UI tidy up", @"profile_url": @"https://graph.facebook.com/100009178679586/picture?width=120&height=120"}];
     [self.chats addObject:@{@"name":@"Erin / Project XY", @"unread": [NSNumber numberWithBool:NO], @"urgent": [NSNumber numberWithBool:NO], @"timestamp": [NSDate date], @"last_message": @"Oh OK - I take it all back", @"profile_url": @"https://graph.facebook.com/564664585/picture?width=120&height=120"}];
     
+    [SVProgressHUD show];
     [self loadGigs];
     
     AppDelegate *app = (AppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -47,9 +50,12 @@
 }
 
 - (void)loadGigs {
+
     self.chats = [NSMutableArray new];
     [[API shared] getGigs:^(id gigsResponse, NSError *error) {
 //        NSLog(@"gigs = %@", gigsResponse);
+        [SVProgressHUD dismiss];
+        [self.refreshControl endRefreshing];
         
         [gigsResponse[@"data"] enumerateObjectsUsingBlock:^(id  _Nonnull gig, NSUInteger idx, BOOL * _Nonnull stop) {
             id poster = gig[@"poster"];
@@ -143,15 +149,15 @@
 }
 
 - (void)onRefresh:(id)sender {
-    [self.refreshControl endRefreshing];
-    [self.table reloadData];
+    [self loadGigs];
 }
 
 - (void)onSettings:(id)sender {
     [UIActionSheet showInView:self.view withTitle:[[API shared] currentUser][@"name"] cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@[@"Gigster Website", @"Notification Settings", @"Logout"] tapBlock:^(UIActionSheet * _Nonnull actionSheet, NSInteger buttonIndex) {
         NSLog(@"hi");
         if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Gigster Website"]) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://app.gigster.com"]];
+            TOWebViewController *vc = [[TOWebViewController alloc] initWithURLString:@"https://app.gigster.com"];
+            [self.navigationController pushViewController:vc animated:YES];
         } else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Logout"]) {
             [UIAlertView showWithTitle:@"Logout?" message:@"Are you sure you want to logout?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Logout"] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
                 if([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Logout"]) {
@@ -266,6 +272,11 @@
                                  NSForegroundColorAttributeName: [UIColor darkGrayColor]};
     
     return [[NSAttributedString alloc] initWithString:@"Reload" attributes:attributes];
+}
+
+- (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button {
+    [SVProgressHUD show];
+    [self loadGigs];
 }
 
 - (void)emptyDataSetDidTapButton:(UIScrollView *)scrollView {
