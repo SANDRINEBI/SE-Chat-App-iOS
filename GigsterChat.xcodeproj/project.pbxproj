@@ -28,6 +28,9 @@
 		408614891C974FBD00E73866 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 408614871C974FBD00E73866 /* LaunchScreen.storyboard */; };
 		408614941C974FBD00E73866 /* GigsterChatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 408614931C974FBD00E73866 /* GigsterChatTests.m */; };
 		4086149F1C974FBD00E73866 /* GigsterChatUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4086149E1C974FBD00E73866 /* GigsterChatUITests.m */; };
+		40B4AD431CB2BD21006E0C82 /* phone-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 40B4AD401CB2BD21006E0C82 /* phone-icon.png */; };
+		40B4AD441CB2BD21006E0C82 /* phone-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 40B4AD411CB2BD21006E0C82 /* phone-icon@2x.png */; };
+		40B4AD451CB2BD21006E0C82 /* phone-icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 40B4AD421CB2BD21006E0C82 /* phone-icon@3x.png */; };
 		49856FF424C53C694694BF68 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B44E7F74CDD0A891854FE8 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -84,6 +87,9 @@
 		4086149A1C974FBD00E73866 /* GigsterChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GigsterChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4086149E1C974FBD00E73866 /* GigsterChatUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GigsterChatUITests.m; sourceTree = "<group>"; };
 		408614A01C974FBE00E73866 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		40B4AD401CB2BD21006E0C82 /* phone-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "phone-icon.png"; path = "Images/phone-icon.png"; sourceTree = SOURCE_ROOT; };
+		40B4AD411CB2BD21006E0C82 /* phone-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "phone-icon@2x.png"; path = "Images/phone-icon@2x.png"; sourceTree = SOURCE_ROOT; };
+		40B4AD421CB2BD21006E0C82 /* phone-icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "phone-icon@3x.png"; path = "Images/phone-icon@3x.png"; sourceTree = SOURCE_ROOT; };
 		69B44E7F74CDD0A891854FE8 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		98EAF5ABF05CD8D628325253 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -126,6 +132,9 @@
 		40828EB91C99B9D900510C7D /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				40B4AD401CB2BD21006E0C82 /* phone-icon.png */,
+				40B4AD411CB2BD21006E0C82 /* phone-icon@2x.png */,
+				40B4AD421CB2BD21006E0C82 /* phone-icon@3x.png */,
 				40828EC81C99E0DE00510C7D /* arrow-right-chevron@2x.png */,
 				40828EBA1C99B9E900510C7D /* billboard-loginscreen@2x.png */,
 				40828EBB1C99B9E900510C7D /* billboard-notificationscreen@2x.png */,
@@ -328,7 +337,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				408614891C974FBD00E73866 /* LaunchScreen.storyboard in Resources */,
+				40B4AD431CB2BD21006E0C82 /* phone-icon.png in Resources */,
 				40828EC51C99B9E900510C7D /* icon-checkmark@2x.png in Resources */,
+				40B4AD451CB2BD21006E0C82 /* phone-icon@3x.png in Resources */,
 				40828EC21C99B9E900510C7D /* billboard-notificationscreen@2x.png in Resources */,
 				40828EC31C99B9E900510C7D /* button-gear.png in Resources */,
 				408614861C974FBD00E73866 /* Assets.xcassets in Resources */,
@@ -336,6 +347,7 @@
 				40828EC11C99B9E900510C7D /* billboard-loginscreen@2x.png in Resources */,
 				40828EC71C99B9E900510C7D /* logo-titlebar@2x.png in Resources */,
 				40828EC61C99B9E900510C7D /* logo-justchat@2x.png in Resources */,
+				40B4AD441CB2BD21006E0C82 /* phone-icon@2x.png in Resources */,
 				408614841C974FBD00E73866 /* Main.storyboard in Resources */,
 				40828EC41C99B9E900510C7D /* button-gear@2x.png in Resources */,
 			);

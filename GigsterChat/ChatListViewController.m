@@ -49,50 +49,67 @@
 - (void)loadGigs {
     self.chats = [NSMutableArray new];
     [[API shared] getGigs:^(id gigsResponse, NSError *error) {
-        NSLog(@"gigs = %@", gigsResponse);
+//        NSLog(@"gigs = %@", gigsResponse);
         
         NSMutableArray *posterIds = [NSMutableArray new];
         
-        [gigsResponse[@"data"] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [posterIds addObject:obj[@"poster"][@"_id"]];
-//            NSMutableDictionary *chat = [NSMutableDictionary new];
-//            [chat setObject:obj[@"name"] forKey:@"name"];
-//            [chat setObject:@"https://graph.facebook.com/564664585/picture?width=120&height=120" forKey:@"profile_url"];
-//            [chat setObject:[NSDate date] forKey:@"timestamp"];
-//            [chat setObject:@"last_message" forKey:@"last_message"];
-//            [chat setObject:obj[@"_id"] forKey:@"_id"];
+//        [gigsResponse[@"data"] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            NSLog(@"... %@", obj[@"poster"]);
 //            
-//            [self.chats addObject:chat];
-        }];
-        
-        NSLog(@"posterIds = %@", posterIds);
+//
+//            [posterIds addObject:obj[@"poster"][@"_id"]];
+//
+////            NSMutableDictionary *chat = [NSMutableDictionary new];
+////            [chat setObject:obj[@"name"] forKey:@"name"];
+////            [chat setObject:@"https://graph.facebook.com/564664585/picture?width=120&height=120" forKey:@"profile_url"];
+////            [chat setObject:[NSDate date] forKey:@"timestamp"];
+////            [chat setObject:@"last_message" forKey:@"last_message"];
+////            [chat setObject:obj[@"_id"] forKey:@"_id"];
+////            
+////            [self.chats addObject:chat];
+//        }];
+//        
+//        NSLog(@"posterIds = %@", posterIds);
         
 //        posterIds = @[@"545bbbdd67c0a9020018a36b"];
         
-        [[API shared] getUsers:posterIds callback:^(id posterResponse, NSError *error) {
-            NSLog(@"posters = %@", posterResponse);
+//        [[API shared] getUsers:posterIds callback:^(id posterResponse, NSError *error) {
+//            NSLog(@"posters = %@", posterResponse);
         
             [gigsResponse[@"data"] enumerateObjectsUsingBlock:^(id  _Nonnull gig, NSUInteger idx, BOOL * _Nonnull stop) {
-                id poster = posterResponse[@"users"][idx];
-//                id poster = gig[@"poster"];
+                if(idx < 20) {
+                
+//                id poster = posterResponse[@"users"][idx];
+                id poster = gig[@"poster"];
+                    
+                    NSLog(@"gig = %@", gig);
                 
                 NSString *profileUrl = poster[@"img_url"];
                 if(!profileUrl) profileUrl = @"https://app.gigster.com/media/sprites/generic-avatars/av1.png";
                 
+                id name = [NSNull null];
+                if(gig[@"name"]) name = gig[@"name"];
+                
+                if(!gig[@"name"]) NSLog(@"no name");
+                
                 NSMutableDictionary *chat = [NSMutableDictionary new];
-                [chat setObject:gig[@"name"] forKey:@"name"];
+                [chat setObject:name forKey:@"name"];
                 [chat setObject:gig[@"_id"] forKey:@"_id"];
                 [chat setObject:profileUrl forKey:@"profile_url"];
                 [chat setObject:[NSNull null] forKey:@"timestamp"];
                 [chat setObject:@"" forKey:@"last_message"];
+//                    [chat setObject:gig forKey:@"info"];
+                    [chat setObject:gig[@"poster"] forKey:@"poster"];
                 
                 [self.chats addObject:chat];
+                }
             }];
             
             [self.table reloadData];
+
             [self loadLastMessages];
 
-        }];
+//        }];
         
         
     }];

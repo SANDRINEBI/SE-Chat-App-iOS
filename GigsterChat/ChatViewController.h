@@ -27,6 +27,7 @@
 
 - (void)receiveMessagePressed:(UIBarButtonItem *)sender;
 - (void)closePressed:(UIBarButtonItem *)sender;
+- (void)phonePressed:(UIBarButtonItem *)sender;
 - (void)setChatInfo:(NSDictionary*)info;
 
 @end

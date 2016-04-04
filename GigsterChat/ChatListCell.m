@@ -43,8 +43,13 @@
         
     }];
     
-    [self.topLabel setText:info[@"name"]];
-    [self.bodyLabel setText:[info[@"last_message"] emojizedString]];
+    if(info[@"name"] && info[@"name"] != [NSNull null]) {
+        [self.topLabel setText:info[@"name"]];
+    }
+    
+    if(info[@"last_message"] && info[@"last_message"] != [NSNull null]) {
+        [self.bodyLabel setText:[info[@"last_message"] emojizedString]];
+    }
     
     self.dotView.layer.cornerRadius = self.dotView.width/2;
     [self.dotView setHidden:![info[@"unread"] boolValue]];

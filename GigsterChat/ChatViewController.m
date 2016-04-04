@@ -14,7 +14,7 @@
 #import <JSQMessagesViewController/JSQMessagesBubbleImageFactory.h>
 #import <JSQMessagesViewController/JSQMessagesAvatarImageFactory.h>
 #import <NSStringEmojize/NSString+Emojize.h>
-
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 #import <FrameAccessor/FrameAccessor.h>
 #import <Firebase/Firebase.h>
 
@@ -41,8 +41,10 @@
 //    self.senderId = @"1";
 //    self.senderDisplayName = @"Hoan";
 
-    self.inputToolbar.contentView.textView.pasteDelegate = self;
-    self.inputToolbar.contentView.leftBarButtonItem = nil;
+    UIButton *phoneButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    [phoneButton setImage:[UIImage imageNamed:@"phone-icon"] forState:UIControlStateNormal];
+    
+    self.inputToolbar.contentView.leftBarButtonItem = phoneButton;
     self.showLoadEarlierMessagesHeader = NO;
     
     self.collectionView.collectionViewLayout.incomingAvatarViewSize = CGSizeZero;
@@ -63,10 +65,11 @@
 //    [JSQMessagesCollectionViewCell registerMenuAction:@selector(customAction:)];
 //    [UIMenuController sharedMenuController].menuItems = @[ [[UIMenuItem alloc] initWithTitle:@"Custom Action"
 //                                                                                      action:@selector(customAction:)] ];
-    [JSQMessagesCollectionViewCell registerMenuAction:@selector(delete:)];
+//    [JSQMessagesCollectionViewCell registerMenuAction:@selector(delete:)];
     
     [self loadFromFirebase];
 }
+
 
 - (void)loadFromFirebase {
 //    NSString *chatUrl = [NSString stringWithFormat:@"https://gigster-dev.firebaseio.com/messages/%@", self.info[@"_id"]]; // TEST
@@ -93,6 +96,10 @@
             [self.messages addObject:message];
             [self.collectionView reloadData];
             [self scrollToBottomAnimated:YES];
+        } else if([obj[@"type"] isEqualToString:@"wireframe"]) {
+            NSLog(@"NEW wireframe %@", obj);
+        } else if([obj[@"type"] isEqualToString:@"phonecall"]) {
+            NSLog(@"NEW phonecall %@", obj);
         } else {
             NSLog(@"skipping, %@", obj[@"type"]);
         }
@@ -105,12 +112,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    if (self.delegateModal) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
-                                                                                              target:self
-                                                                                              action:@selector(closePressed:)];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -185,7 +186,7 @@
 }
 
 - (NSString *)senderId {
-    return @"1";// toClient
+    return @"1";// toClient=1 then we sent it
 }
 
 - (void)collectionView:(JSQMessagesCollectionView *)collectionView didDeleteMessageAtIndexPath:(NSIndexPath *)indexPath {
@@ -329,6 +330,38 @@
     
     self.navigationItem.title = info[@"name"];
 }
+
+- (void)messagesInputToolbar:(JSQMessagesInputToolbar *)toolbar
+       didPressLeftBarButton:(UIButton *)sender {
+    NSLog(@"mofofof");
+    [self onPhone:nil];
+}
+
+- (void)onPhone:(id)sender {
+//    [UIAlertView show]
+    NSLog(@"phone pressed");
+    
+    if(self.info[@"poster"][@"phone"]) {
+        NSLog(@"phone %@", self.info[@"poster"][@"phone"]);
+        NSString *realPhone = [NSString stringWithFormat:@"+%@",self.info[@"poster"][@"phone"]];
+        NSString *message   = [NSString stringWithFormat:@"Do you want to call %@?", realPhone];
+        NSString *phoneUrl  = [NSString stringWithFormat:@"tel://%@", realPhone];
+        
+        [UIAlertView showWithTitle:@"Call?" message:message cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Call"] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
+            if([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Call"]) {
+                NSLog(@"call");
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneUrl]];
+            }
+        }];
+        
+    } else {
+        NSLog(@"no phone");
+        [UIAlertView showWithTitle:@"No phone number" message:@"The customer hasn't inputted a phone number" cancelButtonTitle:@"Ok" otherButtonTitles:@[] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
+        }];
+    }
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
