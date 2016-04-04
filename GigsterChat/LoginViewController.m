@@ -34,7 +34,15 @@
 //    self.emailField.rightView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, self.emailField.height)];
 //    self.emailField.rightViewMode = UITextFieldViewModeAlways;
     
-//    [self.emailField  setContentInset:UIEdgeInsetsMake(7, 7, 0, 0)];
+    UIView *spacerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    [self.emailField setLeftViewMode:UITextFieldViewModeAlways];
+    [self.emailField setLeftView:spacerView];
+
+    UIView *spacerView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    [self.passwordField setLeftViewMode:UITextFieldViewModeAlways];
+    [self.passwordField setLeftView:spacerView2];
+
+    //    [self.emailField  setContentInset:UIEdgeInsetsMake(7, 7, 0, 0)];
 //    [self.passwordField  setContentInset:UIEdgeInsetsMake(7, 7, 0, 0)];
 
     
