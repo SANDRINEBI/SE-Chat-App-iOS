@@ -96,6 +96,44 @@
 //            JSQMessage *message = [JSQMessage messageWithSenderId:toClient displayName:displayName text:text];
             JSQMessage *message = [[JSQMessage alloc] initWithSenderId:toClient senderDisplayName:displayName date:date text:text];
 
+            // mark as read
+            NSArray *read = obj[@"read"];
+            NSString *userId = [[API shared] currentUser][@"_id"];
+            NSUInteger unixT = (NSUInteger)([[NSDate date] timeIntervalSince1970]*1000);
+            BOOL updateRead = NO;
+            
+            NSLog(@"read = %@", read);
+            if(!read) {
+                read = @[@{@"id": userId, @"timestamp": @(unixT)}];
+                updateRead = YES;
+            } else {
+                __block BOOL inRead = NO;
+                [read enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if([obj[@"id"] isEqualToString:userId]) {
+                        inRead = YES;
+                        *stop = YES;
+                    }
+                }];
+                
+                if(!inRead) {
+                    read = [read arrayByAddingObject:@{@"id": userId, @"timestamp": @(unixT)}];
+                    updateRead = YES;
+                    NSLog(@"appending to read array");
+                } else {
+                    NSLog(@"already in read array");
+                }
+            }
+            
+            NSLog(@"new read = %@", read);
+            
+            if(updateRead) {
+                NSString *url2 = [NSString stringWithFormat:@"https://gigster-debo.firebaseio.com/messages/%@/%@", self.info[@"_id"], snapshot.key];
+                Firebase *ref2 = [[Firebase alloc] initWithUrl:url2];
+                [ref2 updateChildValues:@{@"read": read} withCompletionBlock:^(NSError *error, Firebase *ref) {
+                    NSLog(@"read updated");
+                }];
+            }
+            
             [self.messages addObject:message];
             [self.collectionView reloadData];
             [self scrollToBottomAnimated:YES];
@@ -153,33 +191,14 @@
 {
     NSString *realText = [text unemojizedString];
     NSLog(@"sending: %@", realText);
-//    JSQMessage *message = [[JSQMessage alloc] initWithSenderId:senderId
-//                                             senderDisplayName:senderDisplayName
-//                                                          date:date
-//                                                          text:text];
-//    
-//    [self.messages addObject:message];
     
-    NSDictionary *params = @{@"type": @"text", @"toClient": @"1", @"text": realText, @"isWireframe": @"0", @"showAuto": @"0", @"isProposalReady": @"0"};
+    NSDictionary *params = @{@"type": @"text", @"toClient": @"1", @"text": realText};
     
     [[API shared] sendMessage:params toGig:self.info[@"_id"] callback:^(id response, NSError *error) {
         NSLog(@"%@ %@", response, error);
     }];
     
     [self finishSendingMessageAnimated:YES];
-}
-
-- (void)didPressAccessoryButton:(UIButton *)sender
-{
-    [self.inputToolbar.contentView.textView resignFirstResponder];
-    
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Media messages"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Cancel"
-                                         destructiveButtonTitle:nil
-                                              otherButtonTitles:@"Send photo", @"Send location", @"Send video", nil];
-    
-    [sheet showFromToolbar:self.inputToolbar];
 }
 
 - (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView *)collectionView messageDataForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -352,7 +371,7 @@
     
     if(self.info[@"poster"][@"phone"] && self.info[@"poster"][@"phone"] != [NSNull null] && ![self.info[@"poster"][@"phone"] isEqualToString:@""]) {
         NSLog(@"phone %@", self.info[@"poster"][@"phone"]);
-        NSString *realPhone = [NSString stringWithFormat:@"+%@",self.info[@"poster"][@"phone"]];
+        NSString *realPhone = [NSString stringWithFormat:@"%@",self.info[@"poster"][@"phone"]]; // Used to append "+"
         NSString *message   = [NSString stringWithFormat:@"Do you want to call %@?", realPhone];
         NSString *phoneUrl  = [NSString stringWithFormat:@"tel://%@", realPhone];
         
@@ -368,7 +387,6 @@
         [UIAlertView showWithTitle:@"No phone number" message:@"The customer hasn't inputted a phone number" cancelButtonTitle:@"Ok" otherButtonTitles:@[] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
         }];
     }
-    
 }
 
 

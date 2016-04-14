@@ -14,6 +14,9 @@
 #import <Firebase/Firebase.h>
 #import <NSStringEmojize/NSString+Emojize.h>
 
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
 @interface AppDelegate ()
 
 @end
@@ -32,6 +35,8 @@
     
     NSLog(@"%@", s1);
     NSLog(@"%@", s2);
+    
+    [Fabric with:@[[Crashlytics class]]];
     
     if([[API shared] currentUser]) {
         NSLog(@"Have user, login");
