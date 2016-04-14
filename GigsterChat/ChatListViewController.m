@@ -36,9 +36,9 @@
     [self setupPullToRefresh];
     
     self.chats = [NSMutableArray new];
-    [self.chats addObject:@{@"name":@"Noah / SE Chat", @"unread": [NSNumber numberWithBool:YES], @"urgent": [NSNumber numberWithBool:NO], @"timestamp": [NSDate date], @"last_message": @"Cool! Well I can talk anytime outside that 3 - 4 window!", @"profile_url": @"https://graph.facebook.com/565956182/picture?width=120&height=120"}];
+/*    [self.chats addObject:@{@"name":@"Noah / SE Chat", @"unread": [NSNumber numberWithBool:YES], @"urgent": [NSNumber numberWithBool:NO], @"timestamp": [NSDate date], @"last_message": @"Cool! Well I can talk anytime outside that 3 - 4 window!", @"profile_url": @"https://graph.facebook.com/565956182/picture?width=120&height=120"}];
     [self.chats addObject:@{@"name":@"Hoan / Wardrobe iOS", @"unread": [NSNumber numberWithBool:YES], @"urgent": [NSNumber numberWithBool:YES], @"timestamp": [NSDate date], @"last_message": @"After UI tidy up", @"profile_url": @"https://graph.facebook.com/100009178679586/picture?width=120&height=120"}];
-    [self.chats addObject:@{@"name":@"Erin / Project XY", @"unread": [NSNumber numberWithBool:NO], @"urgent": [NSNumber numberWithBool:NO], @"timestamp": [NSDate date], @"last_message": @"Oh OK - I take it all back", @"profile_url": @"https://graph.facebook.com/564664585/picture?width=120&height=120"}];
+    [self.chats addObject:@{@"name":@"Erin / Project XY", @"unread": [NSNumber numberWithBool:NO], @"urgent": [NSNumber numberWithBool:NO], @"timestamp": [NSDate date], @"last_message": @"Oh OK - I take it all back", @"profile_url": @"https://graph.facebook.com/564664585/picture?width=120&height=120"}];*/
     
     [SVProgressHUD show];
     [self loadGigs];
@@ -58,38 +58,40 @@
         [self.refreshControl endRefreshing];
         
         [gigsResponse[@"data"] enumerateObjectsUsingBlock:^(id  _Nonnull gig, NSUInteger idx, BOOL * _Nonnull stop) {
-            id poster = gig[@"poster"];
-            
-            if(!poster || poster == [NSNull null]) {
-                NSLog(@"poster = nil");
-                return;
+            if(idx < 30) {
+                id poster = gig[@"poster"];
+                
+                if(!poster || poster == [NSNull null]) {
+                    NSLog(@"poster = nil");
+                    return;
+                }
+                    
+                    
+                //    NSLog(@"gig = %@", gig);
+                
+                NSString *profileUrl = poster[@"img_url"];
+                if(!profileUrl) profileUrl = @"https://app.gigster.com/media/sprites/generic-avatars/av1.png";
+                
+                id name = [NSNull null];
+                if(gig[@"name"]) name = gig[@"name"];
+                
+                if(!gig[@"name"]) NSLog(@"no name");
+                
+                NSMutableDictionary *chat = [NSMutableDictionary new];
+                [chat setObject:name forKey:@"name"];
+                [chat setObject:gig[@"_id"] forKey:@"_id"];
+                [chat setObject:profileUrl forKey:@"profile_url"];
+                [chat setObject:[NSNull null] forKey:@"timestamp"];
+                [chat setObject:@"" forKey:@"last_message"];
+                [chat setObject:gig[@"poster"] forKey:@"poster"];
+                [chat setObject:gig forKey:@"gig"];
+                
+                [self.chats addObject:chat];
             }
-                
-                
-            //    NSLog(@"gig = %@", gig);
-            
-            NSString *profileUrl = poster[@"img_url"];
-            if(!profileUrl) profileUrl = @"https://app.gigster.com/media/sprites/generic-avatars/av1.png";
-            
-            id name = [NSNull null];
-            if(gig[@"name"]) name = gig[@"name"];
-            
-            if(!gig[@"name"]) NSLog(@"no name");
-            
-            NSMutableDictionary *chat = [NSMutableDictionary new];
-            [chat setObject:name forKey:@"name"];
-            [chat setObject:gig[@"_id"] forKey:@"_id"];
-            [chat setObject:profileUrl forKey:@"profile_url"];
-            [chat setObject:[NSNull null] forKey:@"timestamp"];
-            [chat setObject:@"" forKey:@"last_message"];
-            [chat setObject:gig[@"poster"] forKey:@"poster"];
-            [chat setObject:gig forKey:@"gig"];
-            
-            [self.chats addObject:chat];
         }];
     
         [self.table reloadData];
-//        [self loadLastMessages];
+        [self loadLastMessages];
         
     }];
 }
@@ -116,9 +118,6 @@
         }];
 
     }];
-    
-    
-    
 }
 
 - (void)setupPullToRefresh {
@@ -191,8 +190,29 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ChatListCell *cell = (ChatListCell*)[tableView dequeueReusableCellWithIdentifier:@"ChatListCell"];
     
-    NSDictionary *info = self.chats[indexPath.row];
+    NSMutableDictionary *info = self.chats[indexPath.row];
     [cell setChatInfo:info];
+    
+    // Do firebase query here
+/*    Firebase *ref = [self.firebase childByAppendingPath:info[@"_id"]];
+    //        [[[ref queryEqualToValue:@"text" childKey:@"type"] queryLimitedToLast:1]  observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+    [[[ref queryOrderedByChild:@"timestamp"] queryLimitedToLast:1] observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"OMGGG : %@ %@", snapshot.key, snapshot.value);
+        
+        if([snapshot.value[@"type"] isEqualToString:@"typing"]) {
+            [info setObject:@"" forKey:@"last_message"];
+        } else if([snapshot.value[@"type"] isEqualToString:@"text"]) {
+            [info setObject:snapshot.value[@"text"] forKey:@"last_message"];
+        } else {
+            [info setObject:@"Attachment" forKey:@"last_message"];
+        }
+        
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:([snapshot.value[@"timestamp"] doubleValue]/1000.0f)];
+        [info setObject:date forKey:@"timestamp"];
+        
+        [self.table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }];*/
+
     
     return cell;
 }
