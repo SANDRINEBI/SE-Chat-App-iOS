@@ -114,6 +114,38 @@
             NSDate *date = [NSDate dateWithTimeIntervalSince1970:([snapshot.value[@"timestamp"] doubleValue]/1000.0f)];
             [chat setObject:date forKey:@"timestamp"];
             
+            NSArray *read = snapshot.value[@"read"];
+            BOOL isUnread = NO;
+            if(read) {
+                NSString *currentUserId = [[API shared] currentUser][@"_id"];
+                __block BOOL inArray = NO;
+                [read enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if([obj[@"id"] isEqualToString:currentUserId]) {
+                        inArray = YES;
+                        *stop = YES;
+                    }
+                }];
+                
+                if(inArray) isUnread = YES;
+            } else {
+                isUnread = YES;
+            }
+            
+            if(isUnread) {
+                // If greater than 5h then it is URGENT
+                NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:date];
+                NSLog(@"interval = %d", (int)interval);
+                
+                if(interval > 5*60*60) {
+                    [chat setObject:[NSNumber numberWithBool:YES] forKey:@"urgent"];                    
+                }
+                
+                [chat setObject:[NSNumber numberWithBool:YES] forKey:@"unread"];
+            } else {
+                [chat setObject:[NSNumber numberWithBool:NO] forKey:@"unread"];
+            }
+            
+            
             [self.table reloadData];
         }];
 
