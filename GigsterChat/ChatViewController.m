@@ -347,7 +347,15 @@
     /**
      *  Don't specify attributes to use the defaults.
      */
-    return [[NSAttributedString alloc] initWithString:message.senderDisplayName];
+    
+    NSDate *ts = message.date;
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"MMM d, H:mm a"];
+    NSString *timestampString = [df stringFromDate:ts];
+    
+    NSString *nameAndTimestamp = [NSString stringWithFormat:@"%@ - %@", message.senderDisplayName, timestampString];
+    
+    return [[NSAttributedString alloc] initWithString:nameAndTimestamp];
 }
 
 
