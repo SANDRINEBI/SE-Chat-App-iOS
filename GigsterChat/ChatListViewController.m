@@ -126,8 +126,15 @@
                     }
                 }];
                 
-                if(inArray) isUnread = YES;
+                if(inArray) {
+                    NSLog(@"in read array - not unread");
+                    isUnread = NO;
+                } else {
+                    NSLog(@"not in array - unread");
+                    isUnread = YES;
+                }
             } else {
+                NSLog(@"no read array - so unread");
                 isUnread = YES;
             }
             
@@ -137,7 +144,7 @@
                 NSLog(@"interval = %d", (int)interval);
                 
                 if(interval > 5*60*60) {
-                    [chat setObject:[NSNumber numberWithBool:YES] forKey:@"urgent"];                    
+                    [chat setObject:[NSNumber numberWithBool:YES] forKey:@"urgent"];
                 }
                 
                 [chat setObject:[NSNumber numberWithBool:YES] forKey:@"unread"];
