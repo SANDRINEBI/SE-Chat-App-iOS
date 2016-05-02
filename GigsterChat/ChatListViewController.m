@@ -194,7 +194,7 @@
     BOOL notifOn = [[[[API shared] currentUser] objectForKey:@"pushNotifications"] boolValue];
     BOOL availOn = [[[[API shared] currentUser] objectForKey:@"available"] boolValue];
     
-    NSString *notificationsText = notifOn ? @"Turn OFF notifications" : @"Turn ON notificaitons";
+    NSString *notificationsText = notifOn ? @"Turn OFF notifications" : @"Turn ON notifications";
     NSString *availabilityText  = availOn ? @"Turn OFF availability"  : @"Turn ON availability";
     
     [UIActionSheet showInView:self.view withTitle:[[API shared] currentUser][@"name"] cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@[@"Gigster Website", notificationsText, availabilityText, @"Logout"] tapBlock:^(UIActionSheet * _Nonnull actionSheet, NSInteger buttonIndex) {
