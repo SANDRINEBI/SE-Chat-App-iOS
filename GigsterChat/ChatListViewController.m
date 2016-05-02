@@ -259,10 +259,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSDictionary *info = self.chats[indexPath.row];
+    NSMutableDictionary *info = self.chats[indexPath.row];
 //    [self performSegueWithIdentifier:@"ChatListToChat" sender:info];
     
     NSLog(@"cinfo = %@", info);
+    
+    // Mark as read here
+    [info setObject:[NSNumber numberWithBool:NO] forKey:@"unread"];
+    [info setObject:[NSNumber numberWithBool:NO] forKey:@"urgent"];
+    
+    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     
     ChatViewController *vc = [[ChatViewController alloc] init];
     [vc setChatInfo:info];
