@@ -15,13 +15,14 @@ typedef void (^APIBlock)(id response, NSError *error);
 
 @property (nonatomic, retain) AFHTTPSessionManager *manager;
 @property (nonatomic, retain) NSString *baseURL;
-@property (nonatomic, retain) id currentUser;
+@property (nonatomic, retain) NSMutableDictionary *currentUser;
 
 + (API*)shared;
 - (void)saveCurrentUser:(id)currentUser;
 - (void)login:(NSString*)email withPassword:(NSString*)password callback:(APIBlock)cb;
 - (void)logout;
 - (void)getMe:(APIBlock)cb;
+- (void)updateMe:(NSDictionary*)updates callback:(APIBlock)cb;
 - (void)getGigs:(APIBlock)cb;
 - (void)getUsers:(NSArray*)userIds callback:(APIBlock)cb;
 - (void)saveDeviceToken:(NSString*)token callback:(APIBlock)cb;

@@ -191,7 +191,13 @@
 }
 
 - (void)onSettings:(id)sender {
-    [UIActionSheet showInView:self.view withTitle:[[API shared] currentUser][@"name"] cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@[@"Gigster Website", @"Notification Settings", @"Logout"] tapBlock:^(UIActionSheet * _Nonnull actionSheet, NSInteger buttonIndex) {
+    BOOL notifOn = [[[[API shared] currentUser] objectForKey:@"pushNotifications"] boolValue];
+    BOOL availOn = [[[[API shared] currentUser] objectForKey:@"available"] boolValue];
+    
+    NSString *notificationsText = notifOn ? @"Turn OFF notifications" : @"Turn ON notificaitons";
+    NSString *availabilityText  = availOn ? @"Turn OFF availability"  : @"Turn ON availability";
+    
+    [UIActionSheet showInView:self.view withTitle:[[API shared] currentUser][@"name"] cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@[@"Gigster Website", notificationsText, availabilityText, @"Logout"] tapBlock:^(UIActionSheet * _Nonnull actionSheet, NSInteger buttonIndex) {
         NSLog(@"hi");
         if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Gigster Website"]) {
             TOWebViewController *vc = [[TOWebViewController alloc] initWithURLString:@"https://app.gigster.com"];
@@ -202,6 +208,14 @@
                     [[API shared] logout];
                     [self performSegueWithIdentifier:@"ChatListToLogin" sender:nil];
                 }
+            }];
+        } else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:notificationsText]) {
+            [[API shared] updateMe:@{@"pushNotifications": notifOn ? @"false" : @"true"} callback:^(id response, NSError *error) {
+                NSLog(@"resp %@", response);
+            }];
+        } else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:availabilityText]) {
+            [[API shared] updateMe:@{@"available": availOn ? @"false" : @"true"} callback:^(id response, NSError *error) {
+                NSLog(@"resp %@", response);
             }];
         }
     }];

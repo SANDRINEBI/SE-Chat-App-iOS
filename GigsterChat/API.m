@@ -36,7 +36,7 @@
             NSError *readError;
             id currentUser = [NSJSONSerialization JSONObjectWithData:currentUserData options:0 error:&readError];
             if(!readError) {
-                self.currentUser = currentUser;
+                self.currentUser = [[NSMutableDictionary alloc] initWithDictionary:currentUser];
                 NSLog(@"loaded current user from defaults");
             }
 
@@ -47,7 +47,7 @@
 }
 
 - (void)saveCurrentUser:(id)currentUser {
-    self.currentUser = currentUser;
+    self.currentUser = [[NSMutableDictionary alloc] initWithDictionary:currentUser];
     
     NSError *writeError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:currentUser options:NSJSONWritingPrettyPrinted error:&writeError];
@@ -156,6 +156,30 @@
     NSString *urlString = [NSString stringWithFormat:@"%@/api/v1/users/%@/devices/apns?token=%@", self.baseURL, userId, token];
 
     [self POST:urlString parameters:nil progress:nil completion:cb];
+}
+
+- (void)updateMe:(NSDictionary*)updates callback:(APIBlock)cb {
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/v1/users/me", self.baseURL];
+
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/JSON" forHTTPHeaderField:@"Content-Type"];
+    
+    [manager PATCH:urlString parameters:updates success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"respo %@", responseObject);
+        
+        cb(responseObject, nil);
+        
+        // Save the current user
+        [updates enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            [self.currentUser setObject:obj forKey:key];
+        }];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSString *errStr = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
+        NSData *errData = [errStr dataUsingEncoding:NSUTF8StringEncoding];
+        id errJson = [NSJSONSerialization JSONObjectWithData:errData options:0 error:nil];
+        cb(errJson, error);
+    }];
 }
 
 - (void)sendMessage:(NSDictionary*)params toGig:(NSString*)gigId callback:(APIBlock)cb {
