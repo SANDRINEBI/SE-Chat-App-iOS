@@ -579,7 +579,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigster.PoolDay2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9e576bd2-e109-42cf-9932-67ac796e87f4";
+				PROVISIONING_PROFILE = "1db86b71-e76b-4dc3-8dd6-6a11e42c296c";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -596,7 +596,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigster.PoolDay2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9e576bd2-e109-42cf-9932-67ac796e87f4";
+				PROVISIONING_PROFILE = "1db86b71-e76b-4dc3-8dd6-6a11e42c296c";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
