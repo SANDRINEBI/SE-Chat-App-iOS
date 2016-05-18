@@ -16,6 +16,7 @@
 
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
 @interface AppDelegate ()
 
@@ -87,6 +88,9 @@
     NSLog(@"token = %@", realDeviceToken);
 
     [[API shared] saveDeviceToken:realDeviceToken callback:^(id response, NSError *error) {
+        
+        [UIAlertView showWithTitle:@"Saved" message:realDeviceToken cancelButtonTitle:@"ok" otherButtonTitles:nil tapBlock:nil];
+        
         NSLog(@"%@ - %@", response, error);
     }];
 }

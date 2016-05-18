@@ -88,6 +88,10 @@
         } else {
             NSLog(@"success login");
             
+            [[API shared] updateMe:@{@"pushNotifications": @"true"} callback:^(id response, NSError *error) {
+                NSLog(@"resp %@", response);
+            }];
+            
             [self performSegueWithIdentifier:@"LoginToChatList" sender:nil];
         }
 

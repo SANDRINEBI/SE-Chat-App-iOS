@@ -96,6 +96,11 @@
     }];
 }
 
+- (void)moveChatToTop:(NSString*)gigId {
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"propertyName == %@", gigId];
+
+}
+
 - (void)loadLastMessages {
     [self.chats enumerateObjectsUsingBlock:^(NSMutableDictionary *chat, NSUInteger idx, BOOL * _Nonnull stop) {
         Firebase *ref = [self.firebase childByAppendingPath:chat[@"_id"]];
@@ -113,6 +118,8 @@
             
             NSDate *date = [NSDate dateWithTimeIntervalSince1970:([snapshot.value[@"timestamp"] doubleValue]/1000.0f)];
             [chat setObject:date forKey:@"timestamp"];
+            
+            NSLog(@"value = %@", snapshot.value);
             
             NSArray *read = snapshot.value[@"read"];
             BOOL isUnread = NO;
@@ -138,6 +145,10 @@
                 isUnread = YES;
             }
             
+            if([snapshot.value[@"toClient"] boolValue]) {
+                isUnread = NO;
+            }
+            
             if(isUnread) {
                 // If greater than 5h then it is URGENT
                 NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:date];
@@ -152,10 +163,20 @@
                 [chat setObject:[NSNumber numberWithBool:NO] forKey:@"unread"];
             }
             
-            
+            // reorder
+            [self reorderChats];
             [self.table reloadData];
         }];
 
+    }];
+}
+
+- (void)reorderChats {
+    [self.chats sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSDate *d1 = obj1[@"timestamp"];
+        NSDate *d2 = obj2[@"timestamp"];
+        
+        return [d1 compare:d2];
     }];
 }
 
@@ -205,7 +226,13 @@
         } else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Logout"]) {
             [UIAlertView showWithTitle:@"Logout?" message:@"Are you sure you want to logout?" cancelButtonTitle:@"Cancel" otherButtonTitles:@[@"Logout"] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
                 if([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Logout"]) {
+                    
+                    [[API shared] saveDeviceToken:@"null" callback:^(id response, NSError *error) {
+                        NSLog(@"device token should be NUKED");
+                    }];
+                    
                     [[API shared] logout];
+                    
                     [self performSegueWithIdentifier:@"ChatListToLogin" sender:nil];
                 }
             }];

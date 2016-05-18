@@ -75,76 +75,91 @@
 
 
 - (void)loadFromFirebase {
-//    NSString *chatUrl = [NSString stringWithFormat:@"https://gigster-dev.firebaseio.com/messages/%@", self.info[@"_id"]]; // TEST
+    __block BOOL initialAdds = YES;
+
     NSString *chatUrl = [NSString stringWithFormat:@"https://gigster-debo.firebaseio.com/messages/%@", self.info[@"_id"]]; // PROD
     NSLog(@"fburl = %@", chatUrl);
     Firebase *ref = [[Firebase alloc] initWithUrl:chatUrl];
     [ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
         id obj = snapshot.value;
         
-        if([obj[@"type"] isEqualToString:@"text"]) {
-            NSLog(@"text child added, %@", obj);
-            
-            NSString *text = [obj[@"text"] emojizedString];
-            NSString *displayName = obj[@"firstName"];
-            NSString *toClient = [obj[@"toClient"] boolValue] ? @"1" : @"0";
-            if(!displayName || displayName == [NSNull null]) displayName=@" ";
-            
-            NSLog(@"text = %@", text);
-            NSDate *date = [NSDate dateWithTimeIntervalSince1970:([obj[@"timestamp"] doubleValue]/1000.0f)];
-            
-//            JSQMessage *message = [JSQMessage messageWithSenderId:toClient displayName:displayName text:text];
-            JSQMessage *message = [[JSQMessage alloc] initWithSenderId:toClient senderDisplayName:displayName date:date text:text];
-
-            // mark as read
-            NSArray *read = obj[@"read"];
-            NSString *userId = [[API shared] currentUser][@"_id"];
-            NSUInteger unixT = (NSUInteger)([[NSDate date] timeIntervalSince1970]*1000);
-            BOOL updateRead = NO;
-            
-            NSLog(@"read = %@", read);
-            if(!read) {
-                read = @[@{@"id": userId, @"timestamp": @(unixT)}];
-                updateRead = YES;
-            } else {
-                __block BOOL inRead = NO;
-                [read enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if([obj[@"id"] isEqualToString:userId]) {
-                        inRead = YES;
-                        *stop = YES;
-                    }
-                }];
-                
-                if(!inRead) {
-                    read = [read arrayByAddingObject:@{@"id": userId, @"timestamp": @(unixT)}];
-                    updateRead = YES;
-                    NSLog(@"appending to read array");
-                } else {
-                    NSLog(@"already in read array");
-                }
-            }
-            
-            NSLog(@"new read = %@", read);
-            
-            if(updateRead) {
-                NSString *url2 = [NSString stringWithFormat:@"https://gigster-debo.firebaseio.com/messages/%@/%@", self.info[@"_id"], snapshot.key];
-                Firebase *ref2 = [[Firebase alloc] initWithUrl:url2];
-                [ref2 updateChildValues:@{@"read": read} withCompletionBlock:^(NSError *error, Firebase *ref) {
-                    NSLog(@"read updated");
-                }];
-            }
-            
-            [self.messages addObject:message];
+        [self addNewChat:obj key:snapshot.key];
+        
+        if(!initialAdds) {
             [self.collectionView reloadData];
             [self scrollToBottomAnimated:YES];
-        } else if([obj[@"type"] isEqualToString:@"wireframe"]) {
-            NSLog(@"NEW wireframe %@", obj);
-        } else if([obj[@"type"] isEqualToString:@"phonecall"]) {
-            NSLog(@"NEW phonecall %@", obj);
-        } else {
-            NSLog(@"skipping, %@", obj[@"type"]);
         }
     }];
+
+    [ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+        initialAdds = NO;
+        [self.collectionView reloadData];
+        [self scrollToBottomAnimated:YES];
+    }];
+}
+
+- (void)addNewChat:(id)obj key:(NSString*)key {
+    if([obj[@"type"] isEqualToString:@"text"]) {
+        NSLog(@"text child added, %@", obj);
+        
+        NSString *text = [obj[@"text"] emojizedString];
+        NSString *displayName = obj[@"firstName"];
+        NSString *toClient = [obj[@"toClient"] boolValue] ? @"1" : @"0";
+        if(!displayName || displayName == [NSNull null]) displayName=@" ";
+        
+        NSLog(@"text = %@", text);
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:([obj[@"timestamp"] doubleValue]/1000.0f)];
+        
+        //            JSQMessage *message = [JSQMessage messageWithSenderId:toClient displayName:displayName text:text];
+        JSQMessage *message = [[JSQMessage alloc] initWithSenderId:toClient senderDisplayName:displayName date:date text:text];
+        
+        // mark as read
+        NSArray *read = obj[@"read"];
+        NSString *userId = [[API shared] currentUser][@"_id"];
+        NSUInteger unixT = (NSUInteger)([[NSDate date] timeIntervalSince1970]*1000);
+        BOOL updateRead = NO;
+        
+        NSLog(@"read = %@", read);
+        if(!read) {
+            read = @[@{@"id": userId, @"timestamp": @(unixT)}];
+            updateRead = YES;
+        } else {
+            __block BOOL inRead = NO;
+            [read enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if([obj[@"id"] isEqualToString:userId]) {
+                    inRead = YES;
+                    *stop = YES;
+                }
+            }];
+            
+            if(!inRead) {
+                read = [read arrayByAddingObject:@{@"id": userId, @"timestamp": @(unixT)}];
+                updateRead = YES;
+                NSLog(@"appending to read array");
+            } else {
+                NSLog(@"already in read array");
+            }
+        }
+        
+        NSLog(@"new read = %@", read);
+        
+        if(updateRead) {
+            NSString *url2 = [NSString stringWithFormat:@"https://gigster-debo.firebaseio.com/messages/%@/%@", self.info[@"_id"], key];
+            Firebase *ref2 = [[Firebase alloc] initWithUrl:url2];
+            [ref2 updateChildValues:@{@"read": read} withCompletionBlock:^(NSError *error, Firebase *ref) {
+                NSLog(@"read updated");
+            }];
+        }
+        
+        [self.messages addObject:message];
+    } else if([obj[@"type"] isEqualToString:@"wireframe"]) {
+        NSLog(@"NEW wireframe %@", obj);
+    } else if([obj[@"type"] isEqualToString:@"phonecall"]) {
+        NSLog(@"NEW phonecall %@", obj);
+    } else {
+        NSLog(@"skipping, %@", obj[@"type"]);
+    }
+
 }
 
 - (void)onInfo:(id)sender {
@@ -197,7 +212,9 @@
     [[API shared] sendMessage:params toGig:self.info[@"_id"] callback:^(id response, NSError *error) {
         NSLog(@"%@ %@", response, error);
     }];
-    
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"moveGigToTop" object:self.info[@"_id"]];
+
     [self finishSendingMessageAnimated:YES];
 }
 
