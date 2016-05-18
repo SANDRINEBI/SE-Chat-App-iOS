@@ -88,6 +88,8 @@
         if(!initialAdds) {
             [self.collectionView reloadData];
             [self scrollToBottomAnimated:YES];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"markGigAsRead" object:self.info[@"_id"]];
         }
     }];
 
@@ -192,9 +194,6 @@
 - (void)closePressed:(UIBarButtonItem *)sender {
     [self.delegateModal didDismissChatViewController:self];
 }
-
-
-
 
 #pragma mark - JSQMessagesViewController method overrides
 

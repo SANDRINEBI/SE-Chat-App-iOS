@@ -47,6 +47,51 @@
     [app requestPushPermissions];
     
     self.firebase = [[Firebase alloc] initWithUrl:@"https://gigster-debo.firebaseio.com/messages/"];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(markGigAsRead:) name:@"markGigAsRead" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moveGigToTop:) name:@"moveGigToTop" object:nil];
+}
+
+- (void)markGigAsRead:(NSNotification*)notif {
+    NSString *gigId = (NSString*)[notif object];
+    
+    NSLog(@"marking %@ as read", gigId);
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id == '%@'", gigId];
+    NSInteger index = [self.chats indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        return [obj[@"_id"] isEqualToString:gigId];
+    }];
+    
+    NSLog(@"found at index %d", index);
+    
+    if(index != -1) {
+        NSMutableDictionary *obj = [self.chats objectAtIndex:index];
+        [obj setObject:[NSNumber numberWithBool:NO] forKey:@"unread"];
+        
+        [self.table reloadData];
+    }
+}
+
+- (void)moveGigToTop:(NSNotification*)notif {
+    NSString *gigId = (NSString*)[notif object];
+    
+    NSLog(@"moving %@ to top", gigId);
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"_id == '%@'", gigId];
+    NSInteger index = [self.chats indexOfObjectPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        return [obj[@"_id"] isEqualToString:gigId];
+    }];
+    
+    NSLog(@"found at index %d", index);
+
+    if(index != -1) {
+        NSMutableDictionary *obj = [self.chats objectAtIndex:index];
+        [self.chats removeObjectAtIndex:index];
+        [self.chats insertObject:obj atIndex:0];
+        
+        [self.table reloadData];
+    }
+    
 }
 
 - (void)loadGigs {
