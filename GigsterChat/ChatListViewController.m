@@ -364,13 +364,16 @@
 }
 
 -(NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *chat = self.chats[indexPath.row];
+    NSMutableDictionary *chat = self.chats[indexPath.row];
     
-    NSString *actionTitle = [chat[@"unread"] boolValue] ? @"Mark as read" : @"Mark as unread";
+    NSString *actionTitle = @"Mark as Read";//[chat[@"unread"] boolValue] ? @"Mark as read" : @"Mark as unread";
     
     UITableViewRowAction *markAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:actionTitle handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-        //insert your editAction here
-            
+        NSLog(@"hiii");
+        
+        [chat setObject:[NSNumber numberWithBool:NO] forKey:@"unread"];
+        
+        [self.table reloadData];
     }];
     markAction.backgroundColor = [UIColor grayColor];
     

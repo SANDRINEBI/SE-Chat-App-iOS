@@ -73,27 +73,37 @@
     [self loadFromFirebase];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    // Remove listeners
+//    [self.ref removeAllObservers];
+}
 
 - (void)loadFromFirebase {
     __block BOOL initialAdds = YES;
 
     NSString *chatUrl = [NSString stringWithFormat:@"https://gigster-debo.firebaseio.com/messages/%@", self.info[@"_id"]]; // PROD
     NSLog(@"fburl = %@", chatUrl);
-    Firebase *ref = [[Firebase alloc] initWithUrl:chatUrl];
-    [ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+    self.ref = [[Firebase alloc] initWithUrl:chatUrl];
+    [self.ref observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
         id obj = snapshot.value;
         
         [self addNewChat:obj key:snapshot.key];
         
-        if(!initialAdds) {
+        if(!initialAdds && [self isViewLoaded] && self.view.window) {
+            NSLog(@"i'm alive");
+
             [self.collectionView reloadData];
             [self scrollToBottomAnimated:YES];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"markGigAsRead" object:self.info[@"_id"]];
+        } else {
+            NSLog(@"not alive");
         }
     }];
 
-    [ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+    [self.ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
         initialAdds = NO;
         [self.collectionView reloadData];
         [self scrollToBottomAnimated:YES];

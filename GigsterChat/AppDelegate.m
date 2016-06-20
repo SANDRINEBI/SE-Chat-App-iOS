@@ -89,7 +89,7 @@
 
     [[API shared] saveDeviceToken:realDeviceToken callback:^(id response, NSError *error) {
         
-        [UIAlertView showWithTitle:@"Saved" message:realDeviceToken cancelButtonTitle:@"ok" otherButtonTitles:nil tapBlock:nil];
+//        [UIAlertView showWithTitle:@"Saved" message:realDeviceToken cancelButtonTitle:@"ok" otherButtonTitles:nil tapBlock:nil];
         
         NSLog(@"%@ - %@", response, error);
     }];

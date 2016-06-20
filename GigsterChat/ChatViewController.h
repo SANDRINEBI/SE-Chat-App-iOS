@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <JSQMessagesViewController/JSQMessagesViewController.h>
-
+#import <Firebase/Firebase.h>
 
 @class ChatViewController;
 
@@ -24,6 +24,7 @@
 
 @property (nonatomic, retain) NSMutableArray *messages;
 @property (nonatomic, retain) NSDictionary *info;
+@property (nonatomic, retain) Firebase *ref;
 
 - (void)receiveMessagePressed:(UIBarButtonItem *)sender;
 - (void)closePressed:(UIBarButtonItem *)sender;
