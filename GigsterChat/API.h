@@ -27,5 +27,6 @@ typedef void (^APIBlock)(id response, NSError *error);
 - (void)getUsers:(NSArray*)userIds callback:(APIBlock)cb;
 - (void)saveDeviceToken:(NSString*)token callback:(APIBlock)cb;
 - (void)sendMessage:(NSDictionary*)params toGig:(NSString*)gigId callback:(APIBlock)cb;
+- (void)getFirebaseToken:(APIBlock)cb;
 
 @end

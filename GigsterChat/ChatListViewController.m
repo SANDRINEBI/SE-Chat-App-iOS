@@ -47,6 +47,17 @@
     [app requestPushPermissions];
     
     self.firebase = [[Firebase alloc] initWithUrl:@"https://gigster-debo.firebaseio.com/messages/"];
+    [[API shared] getFirebaseToken:^(id response, NSError *error) {
+        NSLog(@"response %@", response);
+        NSLog(@"error %@", error);
+        [self.firebase authWithCustomToken:response withCompletionBlock:^(NSError *error, FAuthData *authData) {
+            if (error) {
+                NSLog(@"Login Failed! %@", error);
+            } else {
+                NSLog(@"Login succeeded! %@", authData);
+            }
+        }];
+    }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(markGigAsRead:) name:@"markGigAsRead" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moveGigToTop:) name:@"moveGigToTop" object:nil];

@@ -109,6 +109,22 @@
     }];
 }
 
+- (void)GETstr:(NSString*)urlString parameters:(NSDictionary*)params progress:(nullable void (^)(NSProgress * _Nonnull))uploadProgress completion:(APIBlock)completion {
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    [manager GET:urlString parameters:params progress:uploadProgress success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        completion(responseObject, nil);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSString *errStr = [[NSString alloc] initWithData:(NSData *)error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] encoding:NSUTF8StringEncoding];
+        NSData *errData = [errStr dataUsingEncoding:NSUTF8StringEncoding];
+        id errJson = [NSJSONSerialization JSONObjectWithData:errData options:0 error:nil];
+        completion(errJson, error);
+    }];
+
+}
+
 - (void)login:(NSString*)email withPassword:(NSString*)password callback:(APIBlock)cb {
     NSString *urlString = [NSString stringWithFormat:@"%@/api/session", self.baseURL];
     
@@ -156,6 +172,22 @@
     NSString *urlString = [NSString stringWithFormat:@"%@/api/v1/users/%@/devices/apns?token=%@", self.baseURL, userId, token];
 
     [self POST:urlString parameters:nil progress:nil completion:cb];
+}
+
+- (void)getFirebaseToken:(APIBlock)cb {
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/v1/users/firebase-token", self.baseURL];
+
+    [self GETstr:urlString parameters:nil progress:nil completion:^(id response, NSError *error) {
+        if(error) {
+            cb(nil, error);
+        } else {
+            NSData *data = (NSData*)response;
+            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSString *parsed = [str stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+            
+            cb(parsed, nil);
+        }
+    }];
 }
 
 - (void)updateMe:(NSDictionary*)updates callback:(APIBlock)cb {
